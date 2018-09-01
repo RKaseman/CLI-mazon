@@ -33,7 +33,7 @@ function search() {
     .then(function (answers) {
         switch (answers.choiceOne) {
             case "Find a planet":
-            console.log("\n");
+            // console.log("\n");
             findPlanet();
             break;
 
@@ -58,10 +58,12 @@ function findPlanet() {
         message: "Enter the planet's name"
     })
     .then(function (answers) {
-        var planetName = "SELECT fpl_name, fpl_discmethod, fpl_disc FROM planets WHERE ?";
-        connection.query(planetName, { fpl_name: answers.fpl_name }, function (error, response) {
+        console.log("\n");
+        var planetName = "SELECT rowid, fpl_discmethod, fpl_disc FROM planets WHERE ?";
+        connection.query(planetName, { fpl_name: answers.planet }, function (error, response) {
+        console.log(response);
             for (var i = 0; i < response.length; i++) {
-                console.log("Full name: " + response[i].name 
+                console.log("Full name: " + response[i].rowid 
                 + ", Discovery Method: " + response[i].fpl_discmethod 
                 + ", Discovery Year: " + response[i].fpl_disc);
             }
