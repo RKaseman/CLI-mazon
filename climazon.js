@@ -63,25 +63,36 @@ function findPlanet() {
         connection.query(planetName, { fpl_name: answers.planet }, function (error, response) {
         console.log(response);
             for (var i = 0; i < response.length; i++) {
-                console.log("Full name: " + response[i].rowid 
-                + ", Discovery Method: " + response[i].fpl_discmethod 
-                + ", Discovery Year: " + response[i].fpl_disc);
+                console.log("\nFull name: " + response[i].fpl_name
+                + ",\nDiscovery Method: " + response[i].fpl_discmethod
+                + ",\nDiscovery Year: " + response[i].fpl_disc);
             }
             search();
         });
     });
 };
 
-//     function bidIt() {
-//         inquirer.prompt([
-//             {
-//                 type: "list",
-//                 name: "bidItem",
-//                 message: "Select the Item",
-//                 choices: ["SELECT * FROM auctions"]
-//             }
-//         ])
-//     };
+function findPlanetAlpha() {
+    inquirer.prompt({
+        type: "input",
+        name: "planetAlpha",
+        message: "Select letters to search",
+    })
+    .then(function (answers) {
+        console.log("\n");
+        var letterSearch = "SELECT * FROM planets WHERE fpl_name LIKE [answers.planetAlpha]%";
+        console.log("letterSearch = ", letterSearch);
+        connection.query(letterSearch, { fpl_name: answers.planetAlpha }, function (error, response) {
+            console.log(response);
+            for (var j = 0; j < response.length; j++) {
+                console.log("\nPlanet names: " + response[j].fpl_name
+                + ",\nDiscovery Year: " + response[j].fpl_disc
+                + ",\nAge: " + response[j].fst_age);
+            }
+            search();
+        });
+    });
+};
 
 //     inquirer.prompt([
 //         {
