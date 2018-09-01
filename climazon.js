@@ -19,6 +19,7 @@ connection.connect(function(error) {
 });
 
 
+// search on program start
 function search() {
     inquirer.prompt({
         type: "list",
@@ -33,17 +34,14 @@ function search() {
     .then(function (answers) {
         switch (answers.choiceOne) {
             case "Find a planet":
-            // console.log("\n");
             findPlanet();
             break;
 
-            case "Find a planet name by letters":
-            console.log("\n");
+            case "Find a planet name by letter":
             findPlanetAlpha();
             break;
 
             case "Buy a planet":
-            console.log("\n");
             buyPlanet();
             break;
         }
@@ -51,36 +49,43 @@ function search() {
 };
 
 
+// for case "Find a planet"
 function findPlanet() {
     inquirer.prompt({
         type: "input",
         name: "planet",
         message: "Enter the planet's name"
-    })
-    .then(function (answers) {
-        console.log("\n");
-        var planetName = "SELECT rowid, fpl_discmethod, fpl_disc FROM planets WHERE ?";
+    }).then(function (answers) {
+        var planetName = "SELECT fpl_name, fpl_discmethod, fpl_disc FROM planets WHERE ?";
         connection.query(planetName, { fpl_name: answers.planet }, function (error, response) {
+        console.log("--------");
         console.log(response);
             for (var i = 0; i < response.length; i++) {
-                console.log("\nFull name: " + response[i].fpl_name
-                + ",\nDiscovery Method: " + response[i].fpl_discmethod
-                + ",\nDiscovery Year: " + response[i].fpl_disc);
+                console.log("\n" 
+                + "       Full name: " + response[i].fpl_name
+                + "\n" 
+                + "Discovery Method: " + response[i].fpl_discmethod
+                + "\n" 
+                + "  Discovery Year: " + response[i].fpl_disc
+                + "\n");
             }
             search();
         });
     });
 };
 
+
+// for case "Find a planet name by letter"
 function findPlanetAlpha() {
     inquirer.prompt({
         type: "input",
         name: "planetAlpha",
-        message: "Select letters to search",
+        message: "Select letter to search"
     })
     .then(function (answers) {
         console.log("\n");
-        var letterSearch = "SELECT * FROM planets WHERE fpl_name LIKE [answers.planetAlpha]%";
+        var letterSearch = "SELECT * FROM planets WHERE fpl_name LIKE ?";
+        console.log("answers.planetAlpha = ", answers.planetAlpha);
         console.log("letterSearch = ", letterSearch);
         connection.query(letterSearch, { fpl_name: answers.planetAlpha }, function (error, response) {
             console.log(response);
