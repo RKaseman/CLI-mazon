@@ -14,12 +14,12 @@ var connection = mysql.createConnection({
 
 connection.connect(function(error) {
     if (error) throw error;
-    console.log("\nconnection.threadId = " + connection.threadId + "\n");
+    // console.log("\nconnection.threadId = " + connection.threadId + "\n");
     search();
 });
 
 
-// search on program start
+// options on program start
 function search() {
     inquirer.prompt({
         type: "list",
@@ -57,16 +57,14 @@ function findPlanet() {
         message: "Enter the planet's name"
     }).then(function (answers) {
         var planetName = "SELECT fpl_name, fpl_discmethod, fpl_disc, fpl_orbper, fpl_bmasse, fpl_bmassj, fpl_snum, fst_dist, fst_age FROM planets WHERE ?";
-        console.log("--------");
-        console.log("answers.planet = ", answers.planet);
         connection.query(planetName, { fpl_name: answers.planet }, function (error, response) {
             if (error) throw error;
-            console.log("--------");
-            console.log(".query = ", planetName, { fpl_name: answers.planet });
-            console.log("--------");
-            console.log(response);
             for (var i = 0; i < response.length; i++) {
-                console.log("\n                   Full name: " + response[i].fpl_name
+                console.log(""
+                + "\n-----------------------------"
+                + "\n                      Results"
+                + "\n-----------------------------"
+                + "\n                   Full name: " + response[i].fpl_name
                 + "\n            Discovery Method: " + response[i].fpl_discmethod
                 + "\n              Discovery Year: " + response[i].fpl_disc
                 + "\n       Orbital Period [days]: " + response[i].fpl_orbper
@@ -75,6 +73,7 @@ function findPlanet() {
                 + "\n   Number of Stars in System: " + response[i].fpl_snum
                 + "\n      Distance [pc (parsec)]: " + response[i].fst_dist
                 + "\nStellar Age [Gyr (gigayear)]: " + response[i].fst_age
+                + "\n-----------------------------"
                 + "\n");
             }
             search();
@@ -91,34 +90,38 @@ function findPlanetLetter() {
         message: "Select letter to search"
     }).then(function (answers) {
         var searchChar = answers.planetLetter + "%";
-        console.log("--------");
-        console.log("searchChar = ", searchChar);
         var letterSearch = "SELECT * FROM planets WHERE fpl_name LIKE '" + searchChar + "%'";
-        console.log("--------");
-        console.log("letterSearch = ", letterSearch);
         connection.query(letterSearch, function (error, response) {
             if (error) throw error;
-            console.log("--------");
-            console.log(".query = ", letterSearch);
-            // console.log(response);
             for (var j = 0; j < response.length; j++) {
-                console.log("\n"
+                console.log(""
+                + "\n"
                 + "Planet names: " + response[j].fpl_name
                 + "\n");
             }
-            function buyNow() {
-                inquirer.prompt([
-                    {
-                        type: "confirm",
-                        name: "buyPlanetNow",
-                        message: "Buy this planet?"
-                    }
-                ]).then(function (yesNo) {
-                    if (yesNo.buyPlanetNow === "Y") {}
-                })
-            search();
-            }
+            buyNow();
         });
+    });
+};
+
+
+// automatic purchase offer
+function buyNow() {
+    inquirer.prompt([
+        {
+            type: "confirm",
+            name: "buyPlanetNow",
+            message: "Buy this planet?",
+            default: true
+        }
+    ]).then(function (yesNo) {
+        if (yesNo.buyPlanetNow === true) {
+            console.log("\n");
+            console.log("test")
+        }
+        else {
+            search();
+        }
     });
 };
 
