@@ -26,19 +26,54 @@ function search() {
         name: "choiceOne",
         message: "Select an option",
         choices: [
-            "Find a planet",
-            "Find a planet name by letter",
+            "Find a planet by name",
+            "Find a planet name by letter(s)",
+            "Filter by discovery year",
+            "Filter by orbital period",
+            "Filter by planet mass [Earth mass]",
+            "Filter by planet mass [Jupiter mass]",
+            "Filter by number of suns",
+            "Filter by distance",
+            "Filter by age [gigayears]",
             "Buy a planet"
         ]
     })
     .then(function (answers) {
         switch (answers.choiceOne) {
-            case "Find a planet":
-            findPlanet();
+            case "Find a planet by name":
+            nameFind();
             break;
 
-            case "Find a planet name by letter":
-            findPlanetLetter();
+            case "Find a planet name by letter(s)":
+            partNameFilter();
+            break;
+
+            case "Filter by discovery year":
+            discFilter();
+            break;
+
+            case "Filter by orbital period":
+            orbperFilter();
+            break;
+
+            case "Filter by planet mass [Earth mass]":
+            bmasseFilter();
+            break;
+
+            case "Filter by planet mass [Jupiter mass]":
+            bmassjFilter();
+            break;
+
+            case "Filter by number of suns":
+            snumFilter();
+            break;
+
+            case "Filter by distance":
+            distFilter();
+            break;
+
+            case "Filter by age [gigayears]":
+            ageFilter();
             break;
 
             case "Buy a planet":
@@ -49,14 +84,14 @@ function search() {
 };
 
 
-// for case "Find a planet"
-function findPlanet() {
+// for case "Find a planet by name"
+function nameFind() {
     inquirer.prompt({
         type: "input",
         name: "planet",
         message: "Enter the planet's name"
     }).then(function (answers) {
-        var planetName = "SELECT fpl_name, fpl_discmethod, fpl_disc, fpl_orbper, fpl_bmasse, fpl_bmassj, fpl_snum, fst_dist, fst_age FROM planets WHERE ?";
+        var planetName = "SELECT fpl_name, fpl_discmethod, fpl_disc, fpl_orbper, fpl_eccen, fpl_bmasse, fpl_bmassj, fpl_snum, fst_dist, fst_age FROM planets WHERE ?";
         connection.query(planetName, { fpl_name: answers.planet }, function (error, response) {
             if (error) throw error;
             for (var i = 0; i < response.length; i++) {
@@ -68,6 +103,7 @@ function findPlanet() {
                 + "\n            Discovery Method: " + response[i].fpl_discmethod
                 + "\n              Discovery Year: " + response[i].fpl_disc
                 + "\n       Orbital Period [days]: " + response[i].fpl_orbper
+                + "\n                Eccentricity: " + response[i].fpl_eccen
                 + "\n    Planet Mass [Earth mass]: " + response[i].fpl_bmasse
                 + "\n  Planet Mass [Jupiter mass]: " + response[i].fpl_bmassj
                 + "\n   Number of Stars in System: " + response[i].fpl_snum
@@ -83,7 +119,7 @@ function findPlanet() {
 
 
 // for case "Find a planet name by letter"
-function findPlanetLetter() {
+function partNameFilter() {
     inquirer.prompt({
         type: "input",
         name: "planetLetter",
