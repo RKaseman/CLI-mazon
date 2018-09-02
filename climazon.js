@@ -60,10 +60,11 @@ function findPlanet() {
         console.log("--------");
         console.log("answers.planet = ", answers.planet);
         connection.query(planetName, { fpl_name: answers.planet }, function (error, response) {
-        console.log("--------");
-        console.log(".query = ", planetName, { fpl_name: answers.planet });
-        console.log("--------");
-        console.log(response);
+            if (error) throw error;
+            console.log("--------");
+            console.log(".query = ", planetName, { fpl_name: answers.planet });
+            console.log("--------");
+            console.log(response);
             for (var i = 0; i < response.length; i++) {
                 console.log("\n                   Full name: " + response[i].fpl_name
                 + "\n            Discovery Method: " + response[i].fpl_discmethod
@@ -96,15 +97,27 @@ function findPlanetLetter() {
         console.log("--------");
         console.log("letterSearch = ", letterSearch);
         connection.query(letterSearch, function (error, response) {
-        console.log("--------");
-        console.log(".query = ", letterSearch);
-        // console.log(response);
+            if (error) throw error;
+            console.log("--------");
+            console.log(".query = ", letterSearch);
+            // console.log(response);
             for (var j = 0; j < response.length; j++) {
                 console.log("\n"
                 + "Planet names: " + response[j].fpl_name
                 + "\n");
             }
+            function buyNow() {
+                inquirer.prompt([
+                    {
+                        type: "confirm",
+                        name: "buyPlanetNow",
+                        message: "Buy this planet?"
+                    }
+                ]).then(function (yesNo) {
+                    if (yesNo.buyPlanetNow === "Y") {}
+                })
             search();
+            }
         });
     });
 };
@@ -125,7 +138,25 @@ function buyPlanet() {
         ]
     }).then(function (answers) {
         switch (answers.choiceTwo) {
+            case "Filter by name":
+            nameFilter();
+            break;
 
+            case "Filter by letter":
+            letterFilter();
+            break;
+
+            case "Filter by number of suns":
+            sunsFilter();
+            break;
+
+            case "Filter by distance":
+            distFilter();
+            break;
+
+            case "Filter by age":
+            ageFilter();
+            break;
         }
     });
 
