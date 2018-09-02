@@ -27,7 +27,7 @@ function search() {
         message: "Select an option",
         choices: [
             "Find a planet",
-            "Find a planet name by letters",
+            "Find a planet name by letter",
             "Buy a planet"
         ]
     })
@@ -38,7 +38,7 @@ function search() {
             break;
 
             case "Find a planet name by letter":
-            findPlanetAlpha();
+            findPlanetLetter();
             break;
 
             case "Buy a planet":
@@ -56,17 +56,32 @@ function findPlanet() {
         name: "planet",
         message: "Enter the planet's name"
     }).then(function (answers) {
-        var planetName = "SELECT fpl_name, fpl_discmethod, fpl_disc FROM planets WHERE ?";
+        var planetName = "SELECT fpl_name, fpl_discmethod, fpl_disc, fpl_orbper, fpl_bmasse, fpl_bmassj, fpl_snum, fst_dist, fst_age FROM planets WHERE ?";
+        console.log("--------");
+        console.log("answers.planet = ", answers.planet);
         connection.query(planetName, { fpl_name: answers.planet }, function (error, response) {
+        console.log(".query = ", planetName, { fpl_name: answers.planet });
         console.log("--------");
         console.log(response);
             for (var i = 0; i < response.length; i++) {
                 console.log("\n" 
-                + "       Full name: " + response[i].fpl_name
+                + "                   Full name: " + response[i].fpl_name
                 + "\n" 
-                + "Discovery Method: " + response[i].fpl_discmethod
+                + "            Discovery Method: " + response[i].fpl_discmethod
                 + "\n" 
-                + "  Discovery Year: " + response[i].fpl_disc
+                + "              Discovery Year: " + response[i].fpl_disc
+                + "\n"
+                + "       Orbital Period [days]: " + response[i].fpl_orbper
+                + "\n"
+                + "    Planet Mass [Earth mass]: " + response[i].fpl_bmasse
+                + "\n"
+                + "  Planet Mass [Jupiter mass]: " + response[i].fpl_bmassj
+                + "\n"
+                + "   Number of Stars in System: " + response[i].fpl_snum
+                + "\n"
+                + "      Distance [pc (parsec)]: " + response[i].fst_dist
+                + "\n"
+                + "Stellar Age [Gyr (gigayear)]: " + response[i].fst_age
                 + "\n");
             }
             search();
@@ -76,23 +91,28 @@ function findPlanet() {
 
 
 // for case "Find a planet name by letter"
-function findPlanetAlpha() {
+function findPlanetLetter() {
     inquirer.prompt({
         type: "input",
-        name: "planetAlpha",
+        name: "planetLetter",
         message: "Select letter to search"
-    })
-    .then(function (answers) {
-        console.log("\n");
-        var letterSearch = "SELECT * FROM planets WHERE fpl_name LIKE ?";
-        console.log("answers.planetAlpha = ", answers.planetAlpha);
+    }).then(function (answers) {
+        // console.log("--------");
+        // console.log("answers.planetLetter = ", answers.planetLetter);
+        var letterSearch = "SELECT * FROM planets WHERE fpl_name LIKE 't%'";
+        console.log("--------");
         console.log("letterSearch = ", letterSearch);
-        connection.query(letterSearch, { fpl_name: answers.planetAlpha }, function (error, response) {
-            console.log(response);
+        var searchChar = answers.planetLetter + "%";
+        console.log("--------");
+        console.log("searchChar = ", searchChar);
+        connection.query(letterSearch, function (error, response) {
+        console.log(".query = ", letterSearch);
+        console.log("--------");
+        console.log(response);
             for (var j = 0; j < response.length; j++) {
-                console.log("\nPlanet names: " + response[j].fpl_name
-                + ",\nDiscovery Year: " + response[j].fpl_disc
-                + ",\nAge: " + response[j].fst_age);
+                console.log("\n"
+                + "Planet names: " + response[j].fpl_name
+                + "\n");
             }
             search();
         });
