@@ -162,6 +162,7 @@ function buyPlanet() {
             break;
         }
     });
+};
 
 //     function newEntry() {
 //         var itemString = process.argv.slice(2, [process.argv.length - 1]).join(" ");
@@ -206,7 +207,6 @@ function buyPlanet() {
 //         });
 //         console.log("Updated bid: " + itemValue);
 //     };
-};
 
 
 //     // readDB();
@@ -226,6 +226,4 @@ function buyPlanet() {
 
 
     // connection.end();
-
-
 
