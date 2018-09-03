@@ -24,7 +24,7 @@ function search() {
     inquirer.prompt({
         type: "list",
         name: "choiceOne",
-        message: "Select an option",
+        message: "Browse exoplanets for sale",
         choices: [
             "Find a planet by name",
             "Find a planet name by letter(s)",
@@ -88,12 +88,12 @@ function nameFind() {
         var planetName = "SELECT * FROM planets WHERE ?";
         connection.query(planetName, { fpl_name: answers.planet }, function (error, response) {
             if (error) throw error;
-            for (var i = 0; i < response.length; i++) {
-                // console.log(response);
                 console.log(""
                     + "\n-----------------------------"
-                    + "\n                      Results"
-                    + "\n-----------------------------"
+                    + "\n          Planet Name Results"
+                    + "\n-----------------------------");
+            for (var i = 0; i < response.length; i++) {
+                console.log(""
                     + "\n                   Full name: " + response[i].fpl_name
                     + "\n            Discovery Method: " + response[i].fpl_discmethod
                     + "\n              Discovery Year: " + response[i].fpl_disc
@@ -101,6 +101,7 @@ function nameFind() {
                     + "\n                Eccentricity: " + response[i].fpl_eccen
                     + "\n    Planet Mass [Earth mass]: " + response[i].fpl_bmasse
                     + "\n  Planet Mass [Jupiter mass]: " + response[i].fpl_bmassj
+                    + "\n Equilibrium Temperature [K]: " + response[i].fpl_eqt
                     + "\n   Number of Stars in System: " + response[i].fpl_snum
                     + "\n      Distance [pc (parsec)]: " + response[i].fst_dist
                     + "\nStellar Age [Gyr (gigayear)]: " + response[i].fst_age
@@ -124,11 +125,11 @@ function partNameFilter() {
         var letterSearch = "SELECT * FROM planets WHERE fpl_name LIKE '" + searchChar + "%'";
         connection.query(letterSearch, function (error, response) {
             if (error) throw error;
+            console.log("Partial Name Results: ");
             for (var j = 0; j < response.length; j++) {
                 console.log(""
                     + "\n"
-                    + "Planet names: " + response[j].fpl_name
-                    + "\n");
+                    + response[j].fpl_name);
             }
             buyNow();
         });
@@ -150,7 +151,7 @@ function discFilter() {
                 // console.log(response);
                 console.log(""
                     + "\n-----------------------------"
-                    + "\n                      Results"
+                    + "\n       Discovery Year Results"
                     + "\n-----------------------------"
                     + "\n                   Full name: " + response[i].fpl_name
                     + "\n            Discovery Method: " + response[i].fpl_discmethod
@@ -188,7 +189,7 @@ function orbperFilter() {
                 // console.log(response);
                 console.log(""
                     + "\n-----------------------------"
-                    + "\n                      Results"
+                    + "\n       Orbital Period Results"
                     + "\n-----------------------------"
                     + "\n                   Full name: " + response[i].fpl_name
                     + "\n            Discovery Method: " + response[i].fpl_discmethod
@@ -226,7 +227,7 @@ function bmasseFilter() {
                 // console.log(response);
                 console.log(""
                     + "\n-----------------------------"
-                    + "\n                      Results"
+                    + "\n          Planet Mass Results"
                     + "\n-----------------------------"
                     + "\n                   Full name: " + response[i].fpl_name
                     + "\n            Discovery Method: " + response[i].fpl_discmethod
@@ -261,7 +262,7 @@ function snumFilter() {
                 // console.log(response);
                 console.log(""
                     + "\n-----------------------------"
-                    + "\n                      Results"
+                    + "\n       Number of Suns Results"
                     + "\n-----------------------------"
                     + "\n                   Full name: " + response[i].fpl_name
                     + "\n            Discovery Method: " + response[i].fpl_discmethod
@@ -299,7 +300,7 @@ function distFilter() {
                 // console.log(response);
                 console.log(""
                     + "\n-----------------------------"
-                    + "\n                      Results"
+                    + "\n             Distance Results"
                     + "\n-----------------------------"
                     + "\n                   Full name: " + response[i].fpl_name
                     + "\n            Discovery Method: " + response[i].fpl_discmethod
@@ -337,7 +338,7 @@ function starAgeFilter() {
                 // console.log(response);
                 console.log(""
                     + "\n-----------------------------"
-                    + "\n                      Results"
+                    + "\n          Stellar Age Results"
                     + "\n-----------------------------"
                     + "\n                   Full name: " + response[i].fpl_name
                     + "\n            Discovery Method: " + response[i].fpl_discmethod
@@ -364,13 +365,13 @@ function buyNow() {
         {
             type: "confirm",
             name: "buyPlanetNow",
-            message: "Buy this planet?",
+            message: "Buy a planet?",
             default: true
         }
     ]).then(function (yesNo) {
         if (yesNo.buyPlanetNow === true) {
             console.log("\n");
-            console.log("test")
+            nameFind();
         }
         else {
             search();
@@ -384,35 +385,26 @@ function buyPlanet() {
     inquirer.prompt({
         type: "list",
         name: "choiceTwo",
-        message: "Select a filter",
+        message: "Purchase options:",
         choices: [
-            "Filter by name",
-            "Filter by letter",
-            "Filter by number of suns",
-            "Filter by distance",
-            "Filter by age"
+            "Buy whole planet",
+            "Buy a hemisphere",
+            "Buy a quarter",
         ]
     }).then(function (answers) {
         switch (answers.choiceTwo) {
-            case "Filter by name":
-                nameFilter();
+            case "Buy whole planet":
+                buyWhole();
                 break;
 
-            case "Filter by letter":
-                letterFilter();
+            case "Buy a hemisphere":
+                buyHalf();
                 break;
 
-            case "Filter by number of suns":
-                sunsFilter();
+            case "Buy a quarter":
+                buyQuarter();
                 break;
 
-            case "Filter by distance":
-                distFilter();
-                break;
-
-            case "Filter by age":
-                ageFilter();
-                break;
         }
     });
 };
