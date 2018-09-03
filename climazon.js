@@ -12,7 +12,7 @@ var connection = mysql.createConnection({
 });
 
 
-connection.connect(function(error) {
+connection.connect(function (error) {
     if (error) throw error;
     // console.log("\nconnection.threadId = " + connection.threadId + "\n");
     search();
@@ -28,57 +28,51 @@ function search() {
         choices: [
             "Find a planet by name",
             "Find a planet name by letter(s)",
-            "Filter by discovery year",
-            "Filter by orbital period",
-            "Filter by planet mass [Earth mass]",
-            "Filter by planet mass [Jupiter mass]",
-            "Filter by number of suns",
-            "Filter by distance",
-            "Filter by age [gigayears]",
+            "Filter by Discovery Year",
+            "Filter by Orbital Period",
+            "Filter by Planet Mass [Earth mass]",
+            "Filter by number of Suns",
+            "Filter by Distance [parsecs]",
+            "Filter by Stellar Age [gigayears]",
             "Buy a planet"
         ]
-    })
-    .then(function (answers) {
+    }).then(function (answers) {
         switch (answers.choiceOne) {
             case "Find a planet by name":
-            nameFind();
-            break;
+                nameFind();
+                break;
 
             case "Find a planet name by letter(s)":
-            partNameFilter();
-            break;
+                partNameFilter();
+                break;
 
-            case "Filter by discovery year":
-            discFilter();
-            break;
+            case "Filter by Discovery Year":
+                discFilter();
+                break;
 
-            case "Filter by orbital period":
-            orbperFilter();
-            break;
+            case "Filter by Orbital Period":
+                orbperFilter();
+                break;
 
-            case "Filter by planet mass [Earth mass]":
-            bmasseFilter();
-            break;
+            case "Filter by Planet Mass [Earth mass]":
+                bmasseFilter();
+                break;
 
-            case "Filter by planet mass [Jupiter mass]":
-            bmassjFilter();
-            break;
+            case "Filter by number of Suns":
+                snumFilter();
+                break;
 
-            case "Filter by number of suns":
-            snumFilter();
-            break;
+            case "Filter by Distance [parsecs]":
+                distFilter();
+                break;
 
-            case "Filter by distance":
-            distFilter();
-            break;
-
-            case "Filter by age [gigayears]":
-            ageFilter();
-            break;
+            case "Filter by Stellar Age [gigayears]":
+                starAgeFilter();
+                break;
 
             case "Buy a planet":
-            buyPlanet();
-            break;
+                buyPlanet();
+                break;
         }
     });
 };
@@ -91,26 +85,27 @@ function nameFind() {
         name: "planet",
         message: "Enter the planet's name"
     }).then(function (answers) {
-        var planetName = "SELECT fpl_name, fpl_discmethod, fpl_disc, fpl_orbper, fpl_eccen, fpl_bmasse, fpl_bmassj, fpl_snum, fst_dist, fst_age FROM planets WHERE ?";
+        var planetName = "SELECT * FROM planets WHERE ?";
         connection.query(planetName, { fpl_name: answers.planet }, function (error, response) {
             if (error) throw error;
             for (var i = 0; i < response.length; i++) {
+                // console.log(response);
                 console.log(""
-                + "\n-----------------------------"
-                + "\n                      Results"
-                + "\n-----------------------------"
-                + "\n                   Full name: " + response[i].fpl_name
-                + "\n            Discovery Method: " + response[i].fpl_discmethod
-                + "\n              Discovery Year: " + response[i].fpl_disc
-                + "\n       Orbital Period [days]: " + response[i].fpl_orbper
-                + "\n                Eccentricity: " + response[i].fpl_eccen
-                + "\n    Planet Mass [Earth mass]: " + response[i].fpl_bmasse
-                + "\n  Planet Mass [Jupiter mass]: " + response[i].fpl_bmassj
-                + "\n   Number of Stars in System: " + response[i].fpl_snum
-                + "\n      Distance [pc (parsec)]: " + response[i].fst_dist
-                + "\nStellar Age [Gyr (gigayear)]: " + response[i].fst_age
-                + "\n-----------------------------"
-                + "\n");
+                    + "\n-----------------------------"
+                    + "\n                      Results"
+                    + "\n-----------------------------"
+                    + "\n                   Full name: " + response[i].fpl_name
+                    + "\n            Discovery Method: " + response[i].fpl_discmethod
+                    + "\n              Discovery Year: " + response[i].fpl_disc
+                    + "\n       Orbital Period [days]: " + response[i].fpl_orbper
+                    + "\n                Eccentricity: " + response[i].fpl_eccen
+                    + "\n    Planet Mass [Earth mass]: " + response[i].fpl_bmasse
+                    + "\n  Planet Mass [Jupiter mass]: " + response[i].fpl_bmassj
+                    + "\n   Number of Stars in System: " + response[i].fpl_snum
+                    + "\n      Distance [pc (parsec)]: " + response[i].fst_dist
+                    + "\nStellar Age [Gyr (gigayear)]: " + response[i].fst_age
+                    + "\n-----------------------------"
+                    + "\n");
             }
             search();
         });
@@ -118,7 +113,7 @@ function nameFind() {
 };
 
 
-// for case "Find a planet name by letter"
+// for case "Find a planet name by letter(s)"
 function partNameFilter() {
     inquirer.prompt({
         type: "input",
@@ -131,9 +126,9 @@ function partNameFilter() {
             if (error) throw error;
             for (var j = 0; j < response.length; j++) {
                 console.log(""
-                + "\n"
-                + "Planet names: " + response[j].fpl_name
-                + "\n");
+                    + "\n"
+                    + "Planet names: " + response[j].fpl_name
+                    + "\n");
             }
             buyNow();
         });
@@ -141,7 +136,229 @@ function partNameFilter() {
 };
 
 
-// automatic purchase offer
+// for case "Filter by Discovery Year"
+function discFilter() {
+    inquirer.prompt({
+        type: "input",
+        name: "discovered",
+        message: "Enter the year to search"
+    }).then(function (answers) {
+        var planetDisc = "SELECT * FROM planets WHERE ?";
+        connection.query(planetDisc, { fpl_disc: answers.discovered }, function (error, response) {
+            if (error) throw error;
+            for (var i = 0; i < response.length; i++) {
+                // console.log(response);
+                console.log(""
+                    + "\n-----------------------------"
+                    + "\n                      Results"
+                    + "\n-----------------------------"
+                    + "\n                   Full name: " + response[i].fpl_name
+                    + "\n            Discovery Method: " + response[i].fpl_discmethod
+                    + "\n              Discovery Year: " + response[i].fpl_disc
+                    + "\n       Orbital Period [days]: " + response[i].fpl_orbper
+                    + "\n                Eccentricity: " + response[i].fpl_eccen
+                    + "\n    Planet Mass [Earth mass]: " + response[i].fpl_bmasse
+                    + "\n  Planet Mass [Jupiter mass]: " + response[i].fpl_bmassj
+                    + "\n   Number of Stars in System: " + response[i].fpl_snum
+                    + "\n      Distance [pc (parsec)]: " + response[i].fst_dist
+                    + "\nStellar Age [Gyr (gigayear)]: " + response[i].fst_age
+                    + "\n-----------------------------"
+                    + "\n");
+            }
+            search();
+        });
+    });
+};
+
+
+// for case "Filter by Orbital Period"
+function orbperFilter() {
+    inquirer.prompt({
+        type: "input",
+        name: "orbitalPeriod",
+        message: "Enter the desired length of a year"
+    }).then(function (answers) {
+        var orbPerLow = parseFloat(answers.orbitalPeriod) - 1;
+        var orbPerHigh = parseFloat(answers.orbitalPeriod) + 1;
+        console.log("orbital period range = " + orbPerLow + " to " + orbPerHigh);
+        var planetOrbPer = "SELECT * FROM planets WHERE fpl_orbper BETWEEN " + orbPerLow + " AND " + orbPerHigh;
+        connection.query(planetOrbPer, function (error, response) {
+            if (error) throw error;
+            for (var i = 0; i < response.length; i++) {
+                // console.log(response);
+                console.log(""
+                    + "\n-----------------------------"
+                    + "\n                      Results"
+                    + "\n-----------------------------"
+                    + "\n                   Full name: " + response[i].fpl_name
+                    + "\n            Discovery Method: " + response[i].fpl_discmethod
+                    + "\n              Discovery Year: " + response[i].fpl_disc
+                    + "\n       Orbital Period [days]: " + response[i].fpl_orbper
+                    + "\n                Eccentricity: " + response[i].fpl_eccen
+                    + "\n    Planet Mass [Earth mass]: " + response[i].fpl_bmasse
+                    + "\n  Planet Mass [Jupiter mass]: " + response[i].fpl_bmassj
+                    + "\n   Number of Stars in System: " + response[i].fpl_snum
+                    + "\n      Distance [pc (parsec)]: " + response[i].fst_dist
+                    + "\nStellar Age [Gyr (gigayear)]: " + response[i].fst_age
+                    + "\n-----------------------------"
+                    + "\n");
+            }
+            search();
+        });
+    });
+};
+
+
+// for case "Filter by Planet Mass [Earth mass]"
+function bmasseFilter() {
+    inquirer.prompt({
+        type: "input",
+        name: "earthMass",
+        message: "Enter the desired size"
+    }).then(function (answers) {
+        var earthMassLow = parseFloat(answers.earthMass) - 0.5;
+        var earthMassHigh = parseFloat(answers.earthMass) + 0.5;
+        console.log("mass range = " + earthMassLow + " to " + earthMassHigh);
+        var planetMass = "SELECT * FROM planets WHERE fpl_bmasse BETWEEN " + earthMassLow + " AND " + earthMassHigh;
+        connection.query(planetMass, function (error, response) {
+            if (error) throw error;
+            for (var i = 0; i < response.length; i++) {
+                // console.log(response);
+                console.log(""
+                    + "\n-----------------------------"
+                    + "\n                      Results"
+                    + "\n-----------------------------"
+                    + "\n                   Full name: " + response[i].fpl_name
+                    + "\n            Discovery Method: " + response[i].fpl_discmethod
+                    + "\n              Discovery Year: " + response[i].fpl_disc
+                    + "\n       Orbital Period [days]: " + response[i].fpl_orbper
+                    + "\n                Eccentricity: " + response[i].fpl_eccen
+                    + "\n    Planet Mass [Earth mass]: " + response[i].fpl_bmasse
+                    + "\n  Planet Mass [Jupiter mass]: " + response[i].fpl_bmassj
+                    + "\n   Number of Stars in System: " + response[i].fpl_snum
+                    + "\n      Distance [pc (parsec)]: " + response[i].fst_dist
+                    + "\nStellar Age [Gyr (gigayear)]: " + response[i].fst_age
+                    + "\n-----------------------------"
+                    + "\n");
+            }
+            search();
+        });
+    });
+};
+
+
+// for case "Filter by number of Suns"
+function snumFilter() {
+    inquirer.prompt({
+        type: "input",
+        name: "sunCount",
+        message: "Enter the number of suns"
+    }).then(function (answers) {
+        var sunNumber = "SELECT * FROM planets WHERE ?";
+        connection.query(sunNumber, { fpl_snum: answers.sunCount }, function (error, response) {
+            if (error) throw error;
+            for (var i = 0; i < response.length; i++) {
+                // console.log(response);
+                console.log(""
+                    + "\n-----------------------------"
+                    + "\n                      Results"
+                    + "\n-----------------------------"
+                    + "\n                   Full name: " + response[i].fpl_name
+                    + "\n            Discovery Method: " + response[i].fpl_discmethod
+                    + "\n              Discovery Year: " + response[i].fpl_disc
+                    + "\n       Orbital Period [days]: " + response[i].fpl_orbper
+                    + "\n                Eccentricity: " + response[i].fpl_eccen
+                    + "\n    Planet Mass [Earth mass]: " + response[i].fpl_bmasse
+                    + "\n  Planet Mass [Jupiter mass]: " + response[i].fpl_bmassj
+                    + "\n   Number of Stars in System: " + response[i].fpl_snum
+                    + "\n      Distance [pc (parsec)]: " + response[i].fst_dist
+                    + "\nStellar Age [Gyr (gigayear)]: " + response[i].fst_age
+                    + "\n-----------------------------"
+                    + "\n");
+            }
+            search();
+        });
+    });
+};
+
+
+// for case "Filter by Distance [parsecs]"
+function distFilter() {
+    inquirer.prompt({
+        type: "input",
+        name: "distance",
+        message: "Enter the distance in parsecs (1 parsec = 19 trillion miles)"
+    }).then(function (answers) {
+        var distLow = parseFloat(answers.distance) - 0.6;
+        var distHigh = parseFloat(answers.distance) + 0.6;
+        console.log("distance range = " + distLow + " to " + distHigh);
+        var planetDist = "SELECT * FROM planets WHERE fst_dist BETWEEN " + distLow + " AND " + distHigh;
+        connection.query(planetDist, function (error, response) {
+            if (error) throw error;
+            for (var i = 0; i < response.length; i++) {
+                // console.log(response);
+                console.log(""
+                    + "\n-----------------------------"
+                    + "\n                      Results"
+                    + "\n-----------------------------"
+                    + "\n                   Full name: " + response[i].fpl_name
+                    + "\n            Discovery Method: " + response[i].fpl_discmethod
+                    + "\n              Discovery Year: " + response[i].fpl_disc
+                    + "\n       Orbital Period [days]: " + response[i].fpl_orbper
+                    + "\n                Eccentricity: " + response[i].fpl_eccen
+                    + "\n    Planet Mass [Earth mass]: " + response[i].fpl_bmasse
+                    + "\n  Planet Mass [Jupiter mass]: " + response[i].fpl_bmassj
+                    + "\n   Number of Stars in System: " + response[i].fpl_snum
+                    + "\n      Distance [pc (parsec)]: " + response[i].fst_dist
+                    + "\nStellar Age [Gyr (gigayear)]: " + response[i].fst_age
+                    + "\n-----------------------------"
+                    + "\n");
+            }
+            search();
+        });
+    });
+};
+
+
+// for case "Filter by Stellar Age [gigayears]"
+function starAgeFilter() {
+    inquirer.prompt({
+        type: "input",
+        name: "stellarAge",
+        message: "Enter the star age in gigayears (1 gigayear = 1 billion years)"
+    }).then(function (answers) {
+        var stellarAgeLow = parseFloat(answers.stellarAge) - 1.1;
+        var stellarAgeHigh = parseFloat(answers.stellarAge) + 1.1;
+        console.log("distance range = " + stellarAgeLow + " to " + stellarAgeHigh);
+        var starAge = "SELECT * FROM planets WHERE fst_age BETWEEN " + stellarAgeLow + " AND " + stellarAgeHigh;
+        connection.query(starAge, function (error, response) {
+            if (error) throw error;
+            for (var i = 0; i < response.length; i++) {
+                // console.log(response);
+                console.log(""
+                    + "\n-----------------------------"
+                    + "\n                      Results"
+                    + "\n-----------------------------"
+                    + "\n                   Full name: " + response[i].fpl_name
+                    + "\n            Discovery Method: " + response[i].fpl_discmethod
+                    + "\n              Discovery Year: " + response[i].fpl_disc
+                    + "\n       Orbital Period [days]: " + response[i].fpl_orbper
+                    + "\n                Eccentricity: " + response[i].fpl_eccen
+                    + "\n    Planet Mass [Earth mass]: " + response[i].fpl_bmasse
+                    + "\n  Planet Mass [Jupiter mass]: " + response[i].fpl_bmassj
+                    + "\n   Number of Stars in System: " + response[i].fpl_snum
+                    + "\n      Distance [pc (parsec)]: " + response[i].fst_dist
+                    + "\nStellar Age [Gyr (gigayear)]: " + response[i].fst_age
+                    + "\n-----------------------------"
+                    + "\n");
+            }
+            search();
+        });
+    });
+};
+
+
+// for case "Buy a planet"
 function buyNow() {
     inquirer.prompt([
         {
@@ -178,50 +395,27 @@ function buyPlanet() {
     }).then(function (answers) {
         switch (answers.choiceTwo) {
             case "Filter by name":
-            nameFilter();
-            break;
+                nameFilter();
+                break;
 
             case "Filter by letter":
-            letterFilter();
-            break;
+                letterFilter();
+                break;
 
             case "Filter by number of suns":
-            sunsFilter();
-            break;
+                sunsFilter();
+                break;
 
             case "Filter by distance":
-            distFilter();
-            break;
+                distFilter();
+                break;
 
             case "Filter by age":
-            ageFilter();
-            break;
+                ageFilter();
+                break;
         }
     });
 };
-
-//     function newEntry() {
-//         var itemString = process.argv.slice(2, [process.argv.length - 1]).join(" ");
-//         console.log("itemString = " + itemString);
-
-//         var grabValue = parseInt(process.argv[process.argv.length - 1]);
-//         console.log("grabValue = " + grabValue);
-//         // console.log("Creating Item...");
-
-//         var query = connection.query(
-//             "INSERT INTO auctions SET ?",
-//             {
-//                 item: itemString,
-//                 itemValue: grabValue
-//             },
-//             function(error, response) {
-//                 if (error) throw error;
-//                 console.log("error = " + error);
-//                 console.log("response.affectedRows = " + response.affectedRows + " item added.\n")
-
-//         });
-//     };
-
 
 //     // updateEntry();
 
