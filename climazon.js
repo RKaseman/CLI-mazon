@@ -96,6 +96,7 @@ function nameFind() {
                     + "\n  Planet Mass [Jupiter mass]: " + response[i].fpl_bmassj
                     + "\n Planet Radius [Earth radii]: " + response[i].fpl_rade
                     + "\n Equilibrium Temperature [K]: " + response[i].fpl_eqt
+                    // ℉ =(K - 273.15)* 1.8000 + 32.00
                     + "\n   Number of Stars in System: " + response[i].fpl_snum
                     + "\n      Distance [pc (parsec)]: " + response[i].fst_dist
                     + "\nStellar Age [Gyr (gigayear)]: " + response[i].fst_age
