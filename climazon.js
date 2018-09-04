@@ -94,6 +94,7 @@ function nameFind() {
                     + "\n                Eccentricity: " + response[i].fpl_eccen
                     + "\n    Planet Mass [Earth mass]: " + response[i].fpl_bmasse
                     + "\n  Planet Mass [Jupiter mass]: " + response[i].fpl_bmassj
+                    + "\n Planet Radius [Earth radii]: " + response[i].fpl_rade
                     + "\n Equilibrium Temperature [K]: " + response[i].fpl_eqt
                     + "\n   Number of Stars in System: " + response[i].fpl_snum
                     + "\n      Distance [pc (parsec)]: " + response[i].fst_dist
@@ -276,7 +277,6 @@ function buyNow() {
             default: true
         }).then(function (yesNo) {
         if (yesNo.buyPlanetNow === true) {
-            console.log("!! test !!");
             buyPlanet();
         }
         else {
@@ -293,48 +293,57 @@ function buyPlanet() {
         name: "whichPlanet",
         message: "Enter the planet you wish to buy:"
     }).then(function (answers) {
-        connection.query("SELECT * FROM planets WHERE fpl_name " + answers.whichPlanet, function (error, response) {
+        connection.query("SELECT * FROM planets WHERE fpl_name ='" + answers.whichPlanet + "'", function (error, response) {
             if (error) throw error;
             for (var i = 0; i < response.length; i++) {
+                var orbper = parseFloat(response[i].fpl_orbper) / 10;
+                var eccen = parseFloat(response[i].fpl_eccen) * 2;
+                var rade = parseFloat(response[i].fpl_rade) * 1.5;
+                var eqt = parseFloat(response[i].fpl_eqt) * 3.5;
+                var snum = parseFloat(response[i].fpl_snum) * 5;
+                var dist = parseFloat(response[i].fst_dist) * 2.75;
+                var age = parseFloat(response[i].fst_age) * 0.5;
+                var purchasePrice = dist - orbper - eccen - rade + eqt + snum - age;
+
                 console.log(" -| " 
                     + response[i].fpl_name 
-                    + ", " + response[i].fpl_orbper 
-                    + ", " + response[i].fpl_eccen 
-                    + ", " + response[i].fpl_bmasse 
-                    + ", " + response[i].fpl_eqt 
-                    + ", " + response[i].fpl_snum 
-                    + ", " + response[i].fst_dist 
-                    + ", " + response[i].fst_age);
-                purchasePrice = parseFloat(response[i].fst_dist) - parseFloat(response[i].fpl_orbper);
-                console.log("Purchase price for " + answers.whichPlanet + " is " + purchasePrice);
+                    + ", " + orbper 
+                    + ", " + eccen 
+                    + ", " + rade 
+                    + ", " + eqt 
+                    + ", " + snum 
+                    + ", " + dist 
+                    + ", " + age);
+
+                console.log("Purchase price for **" + response[i].fpl_name + "** is $" + purchasePrice + " billion");
             }
             nameFind();
         });
-    });
-    inquirer.prompt({
-        type: "list",
-        name: "quantity",
-        message: "Purchase options:",
-        choices: [
-            "Buy whole planet",
-            "Buy a hemisphere",
-            "Buy a quarter",
-        ]
-    }).then(function (answers) {
-        switch (answers.quantity) {
-            case "Buy whole planet":
-                buyWhole();
-                break;
+        // inquirer.prompt({
+        //     type: "list",
+        //     name: "quantity",
+        //     message: "Purchase options:",
+        //     choices: [
+        //         "Buy whole planet",
+        //         "Buy a hemisphere",
+        //         "Buy a quarter",
+        //     ]
+        // }).then(function (answers) {
+        //     switch (answers.quantity) {
+        //         case "Buy whole planet":
+        //             buyWhole();
+        //             break;
 
-            case "Buy a hemisphere":
-                buyHalf();
-                break;
+        //         case "Buy a hemisphere":
+        //             buyHalf();
+        //             break;
 
-            case "Buy a quarter":
-                buyQuarter();
-                break;
+        //         case "Buy a quarter":
+        //             buyQuarter();
+        //             break;
 
-        }
+        //     }
+        // });
     });
 };
 
