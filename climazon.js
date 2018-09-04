@@ -3,6 +3,13 @@ var mysql = require("mysql");
 var inquirer = require("inquirer");
 
 
+var StringDecoder = require("string_decoder").StringDecoder;
+var decoder = new StringDecoder("utf8");
+// var deg = Buffer([0xE2, 0x82, 0xAC]);
+// var deg = Buffer([0xC2, 0xA2]);
+var deg = Buffer([0xC2, 0xB0]);
+
+
 var connection = mysql.createConnection({
     host: "localhost",
     port: 3306,
@@ -18,6 +25,8 @@ connection.connect(function (error) {
     search();
 });
 
+console.log(decoder);
+console.log(">> " + decoder.write(deg));
 
 // options on program start
 function search() {
@@ -95,8 +104,7 @@ function nameFind() {
                     + "\n    Planet Mass [Earth mass]: " + response[i].fpl_bmasse
                     + "\n  Planet Mass [Jupiter mass]: " + response[i].fpl_bmassj
                     + "\n Planet Radius [Earth radii]: " + response[i].fpl_rade
-                    + "\n Equilibrium Temperature [K]: " + response[i].fpl_eqt
-                    // ℉ =(K - 273.15)* 1.8000 + 32.00
+                    + "\n Equilibrium Temperature [K]: " + response[i].fpl_eqt + " (" + ((parseFloat(response[i].fpl_eqt) * 9 / 5) - 459.67) + decoder.write(deg) + "F)"
                     + "\n   Number of Stars in System: " + response[i].fpl_snum
                     + "\n      Distance [pc (parsec)]: " + response[i].fst_dist
                     + "\nStellar Age [Gyr (gigayear)]: " + response[i].fst_age
