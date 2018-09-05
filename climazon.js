@@ -2,11 +2,12 @@
 var mysql = require("mysql");
 var inquirer = require("inquirer");
 
-
 var StringDecoder = require("string_decoder").StringDecoder;
 var decoder = new StringDecoder("utf8");
 var deg = Buffer([0xC2, 0xB0]);
 
+var format32 = "\n--------------------------------\n";
+var format48 = "\n------------------------------------------------";
 
 var connection = mysql.createConnection({
     host: "localhost",
@@ -19,7 +20,7 @@ var connection = mysql.createConnection({
 
 connection.connect(function (error) {
     if (error) throw error;
-    console.log("\n--------------------------------\n-|   Connected to God Node    |-\n--------------------------------\n");
+    console.log(format32 + "-|   Connected to God Node    |-" + format32);
     search();
 });
 
@@ -88,9 +89,9 @@ function nameFind() {
         var planetName = "SELECT * FROM planets WHERE fpl_name LIKE '%" + answers.planet + "%'";
         connection.query(planetName, function (error, response) {
             if (error) throw error;
-                console.log("\n------------------------------------------------"
+                console.log(format48
                     + "\n Planetary Data Results for '" + answers.planet + "'"
-                    + "\n------------------------------------------------");
+                    + format48);
             for (var i = 0; i < response.length; i++) {
                 console.log("                 Planet name: " + response[i].fpl_name
                     + "\n            Discovery Method: " + response[i].fpl_discmethod
@@ -105,7 +106,7 @@ function nameFind() {
                     + "\n      Distance [pc (parsec)]: " + response[i].fst_dist
                     + "\nStellar Age [Gyr (gigayear)]: " + response[i].fst_age
                     + "\n                   Purchased: " + response[i].rmk_cust
-                    + "\n------------------------------------------------");
+                    + format48);
             }
             buyNow();
         });
@@ -311,9 +312,9 @@ function buyPlanet() {
                 var age = parseFloat(response[i].fst_age) * 0.5;
                 var purchasePrice = dist - orbper - eccen - rade + eqt + snum - age;
 
-                console.log(" -| " 
+                console.log(" rowid: " 
                     + response[i].rowid 
-                    + response[i].fpl_name 
+                    + ", " + response[i].fpl_name 
                     + ", " + orbper 
                     + ", " + eccen 
                     + ", " + rade 
@@ -323,6 +324,7 @@ function buyPlanet() {
                     + ", " + age);
 
                 console.log("Purchase price for \n" + response[i].fpl_name + "\n is $" + purchasePrice + " billion");
+                var updateData = response[i].rowid;
                 inquirer.prompt({
                     type: "confirm",
                     name: "yesToBuy",
@@ -331,11 +333,14 @@ function buyPlanet() {
                 }).then(function (yesBuy) {
                     if (yesBuy.yesToBuy === true) {
                         connection.query("UPDATE planets SET ? WHERE ?",
-                        [{rmk_cust: true},{rowid: response[i].rowid}],
-                        )}
+                        [{rmk_cust: true},{rowid: updateData}], function (error, response) {
+                            if (error) throw error;
+                            console.log(response.affectedRows + " purchased");
+                        }
+                    )}
+                nameFind();
                 })
             }
-            nameFind();
         });
         // inquirer.prompt({
         //     type: "list",
@@ -394,7 +399,7 @@ function buyPlanet() {
 //         console.log("Searching...");
 
 //         connection.query(
-//             "SELECT * FROM auctions", function(error, response) {
+//             "SELECT * FROM planets", function(error, response) {
 //             if (error) throw error;
 //             console.log(response);
 //             console.log("success!");
