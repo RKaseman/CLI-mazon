@@ -395,20 +395,19 @@ function buyPlanet() {
 //     };
 
 
-//     // readDB();
+    // readDB();
 
 
-//     function readDB() {
-//         console.log("Searching...");
+function readDB() {
+    console.log("Searching...");
 
-//         connection.query(
-//             "SELECT * FROM planets", function(error, response) {
-//             if (error) throw error;
-//             console.log(response);
-//             console.log("success!");
+    connection.query("SELECT * FROM planets WHERE rmk_cust = 1", function(error, response) {
+        if (error) throw error;
+        console.log(response);
+        console.log("success!");
 
-//             });
-//     };
+        });
+    };
 
 
     // connection.end();
