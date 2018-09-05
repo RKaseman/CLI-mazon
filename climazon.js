@@ -124,11 +124,11 @@ function discFilter() {
         var planetDisc = "SELECT * FROM planets WHERE ?";
         connection.query(planetDisc, { fpl_disc: answers.discovered }, function (error, response) {
             if (error) throw error;
-            console.log("\n------------------------------------------------"
+            console.log(format48
                 + "\n Planets discovered in " + answers.discovered + ":"
-                + "\n------------------------------------------------");
+                + format48);
             for (var i = 0; i < response.length; i++) {
-                console.log(" -| " + response[i].fpl_name);
+                console.log(response[i].rowid + ". " + response[i].fpl_name);
             }
             buyNow();
         });
@@ -148,13 +148,13 @@ function orbperFilter() {
         var planetOrbPer = "SELECT * FROM planets WHERE fpl_orbper BETWEEN " + orbPerLow + " AND " + orbPerHigh;
         connection.query(planetOrbPer, function (error, response) {
             if (error) throw error;
-            console.log("\n------------------------------------------------"
+            console.log(format48
                 + "\n Orbital Period +/- 5 days: " + answers.orbitalPeriod
-                + "\n------------------------------------------------");
+                + format48);
             for (var i = 0; i < response.length; i++) {
                 console.log("                   Full name: " + response[i].fpl_name
                     + "\n       Orbital Period [days]: " + response[i].fpl_orbper
-                    + "\n------------------------------------------------");
+                    + format48);
             }
             buyNow();
         });
@@ -174,14 +174,14 @@ function bmasseFilter() {
         var planetMass = "SELECT * FROM planets WHERE fpl_bmasse BETWEEN " + earthMassLow + " AND " + earthMassHigh;
         connection.query(planetMass, function (error, response) {
             if (error) throw error;
-            console.log("\n------------------------------------------------"
+            console.log(format48
                 + "\n Planet Mass +/- 0.5 of earth mass: " + answers.earthMass
-                + "\n------------------------------------------------");
+                + format48);
             for (var i = 0; i < response.length; i++) {
                 console.log("                   Full name: " + response[i].fpl_name
                     + "\n    Planet Mass [Earth mass]: " + response[i].fpl_bmasse
                     + "\n  Planet Mass [Jupiter mass]: " + response[i].fpl_bmassj
-                    + "\n------------------------------------------------");
+                    + format48);
             }
             buyNow();
         });
@@ -199,16 +199,16 @@ function snumFilter() {
         var sunNumber = "SELECT * FROM planets WHERE ?";
         connection.query(sunNumber, { fpl_snum: answers.sunCount }, function (error, response) {
             if (error) throw error;
-            console.log("\n------------------------------------------------"
+            console.log(format48
                 + "\n Number of suns: " + answers.sunCount
-                + "\n------------------------------------------------");
+                + format48);
             for (var i = 0; i < response.length; i++) {
                 console.log("                   Full name: " + response[i].fpl_name
                     + "\n            Discovery Method: " + response[i].fpl_discmethod
                     + "\n                Eccentricity: " + response[i].fpl_eccen
                     + "\n Equilibrium Temperature [K]: " + response[i].fpl_eqt + " (" + ((((parseFloat(response[i].fpl_eqt) * 9 / 5) * 10000) - (459.67 * 10000)) / 10000) + decoder.write(deg) + "F)"
                     + "\n   Number of Stars in System: " + response[i].fpl_snum
-                    + "\n------------------------------------------------");
+                    + format48);
             }
             buyNow();
         });
@@ -229,14 +229,14 @@ function distFilter() {
         var planetDist = "SELECT * FROM planets WHERE fst_dist BETWEEN " + distLow + " AND " + distHigh;
         connection.query(planetDist, function (error, response) {
             if (error) throw error;
-            console.log("\n------------------------------------------------"
+            console.log(format48
                 + "\n Distance in parsecs +/- 0.5: " + answers.distance
-                + "\n------------------------------------------------");
+                + format48);
             for (var i = 0; i < response.length; i++) {
                 console.log("                   Full name: " + response[i].fpl_name
                     + "\n      Distance [pc (parsec)]: " + response[i].fst_dist
                     + "\nStellar Age [Gyr (gigayear)]: " + response[i].fst_age
-                    + "\n------------------------------------------------");
+                    + format48);
             }
             buyNow();
         });
@@ -257,9 +257,9 @@ function starAgeFilter() {
         var starAge = "SELECT * FROM planets WHERE fst_age BETWEEN " + stellarAgeLow + " AND " + stellarAgeHigh;
         connection.query(starAge, function (error, response) {
             if (error) throw error;
-            console.log("\n------------------------------------------------"
+            console.log(format48
                 + "\n Stellar Age in gigayears +/- 0.4: " + answers.stellarAge
-                + "\n------------------------------------------------");
+                + format48);
             for (var i = 0; i < response.length; i++) {
                 console.log("                   Full name: " + response[i].fpl_name
                     + "\n            Discovery Method: " + response[i].fpl_discmethod
@@ -267,7 +267,7 @@ function starAgeFilter() {
                     + "\n   Number of Stars in System: " + response[i].fpl_snum
                     + "\n      Distance [pc (parsec)]: " + response[i].fst_dist
                     + "\nStellar Age [Gyr (gigayear)]: " + response[i].fst_age
-                    + "\n------------------------------------------------");
+                    + format48);
             }
             buyNow();
         });
