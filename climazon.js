@@ -101,7 +101,8 @@ function nameFind() {
                     + "\n    Planet Mass [Earth mass]: " + response[i].fpl_bmasse
                     + "\n  Planet Mass [Jupiter mass]: " + response[i].fpl_bmassj
                     + "\n Planet Radius [Earth radii]: " + response[i].fpl_rade
-                    + "\n Equilibrium Temperature [K]: " + response[i].fpl_eqt + " (" + ((((parseFloat(response[i].fpl_eqt) * 9 / 5) * 10000) - (459.67 * 10000)) / 10000) + decoder.write(deg) + "F)"
+                    + "\n Equilibrium Temperature [K]: " + response[i].fpl_eqt
+                    + " (" + ((((parseFloat(response[i].fpl_eqt) * 9 / 5) * 10000) - (459.67 * 10000)) / 10000) + decoder.write(deg) + "F)"
                     + "\n   Number of Stars in System: " + response[i].fpl_snum
                     + "\n      Distance [pc (parsec)]: " + response[i].fst_dist
                     + "\nStellar Age [Gyr (gigayear)]: " + response[i].fst_age
@@ -206,7 +207,8 @@ function snumFilter() {
                 console.log("                   Full name: " + response[i].fpl_name
                     + "\n            Discovery Method: " + response[i].fpl_discmethod
                     + "\n                Eccentricity: " + response[i].fpl_eccen
-                    + "\n Equilibrium Temperature [K]: " + response[i].fpl_eqt + " (" + ((((parseFloat(response[i].fpl_eqt) * 9 / 5) * 10000) - (459.67 * 10000)) / 10000) + decoder.write(deg) + "F)"
+                    + "\n Equilibrium Temperature [K]: " + response[i].fpl_eqt
+                    + " (" + ((((parseFloat(response[i].fpl_eqt) * 9 / 5) * 10000) - (459.67 * 10000)) / 10000) + decoder.write(deg) + "F)"
                     + "\n   Number of Stars in System: " + response[i].fpl_snum
                     + format48);
             }
@@ -263,7 +265,8 @@ function starAgeFilter() {
             for (var i = 0; i < response.length; i++) {
                 console.log("                   Full name: " + response[i].fpl_name
                     + "\n            Discovery Method: " + response[i].fpl_discmethod
-                    + "\n Equilibrium Temperature [K]: " + response[i].fpl_eqt + " (" + ((((parseFloat(response[i].fpl_eqt) * 9 / 5) * 10000) - (459.67 * 10000)) / 10000) + decoder.write(deg) + "F)"
+                    + "\n Equilibrium Temperature [K]: " + response[i].fpl_eqt
+                    + " (" + ((((parseFloat(response[i].fpl_eqt) * 9 / 5) * 10000) - (459.67 * 10000)) / 10000) + decoder.write(deg) + "F)"
                     + "\n   Number of Stars in System: " + response[i].fpl_snum
                     + "\n      Distance [pc (parsec)]: " + response[i].fst_dist
                     + "\nStellar Age [Gyr (gigayear)]: " + response[i].fst_age
