@@ -119,7 +119,7 @@ function discFilter() {
     inquirer.prompt({
         type: "input",
         name: "discovered",
-        message: "Enter the year to search"
+        message: "Enter the year to search (1989, 1992, 1994-present)."
     }).then(function (answers) {
         var planetDisc = "SELECT * FROM planets WHERE ?";
         connection.query(planetDisc, { fpl_disc: answers.discovered }, function (error, response) {
@@ -141,7 +141,7 @@ function orbperFilter() {
     inquirer.prompt({
         type: "input",
         name: "orbitalPeriod",
-        message: "Enter the length of a year in days"
+        message: "Enter the length of a year in days (0.09-7300000)"
     }).then(function (answers) {
         var orbPerLow = parseFloat(answers.orbitalPeriod) - 5;
         var orbPerHigh = parseFloat(answers.orbitalPeriod) + 5;
@@ -194,7 +194,7 @@ function snumFilter() {
     inquirer.prompt({
         type: "input",
         name: "sunCount",
-        message: "Enter the number of suns"
+        message: "Enter the number of suns (1-4)"
     }).then(function (answers) {
         var sunNumber = "SELECT * FROM planets WHERE ?";
         connection.query(sunNumber, { fpl_snum: answers.sunCount }, function (error, response) {
