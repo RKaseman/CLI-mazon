@@ -25,6 +25,7 @@ CREATE TABLE planets (
     fst_mass FLOAT NULL,
     fst_rad FLOAT NULL,
     fst_age FLOAT NULL,
+    rmk_cust BOOLEAN DEFAULT false,
     PRIMARY KEY (rowid)
 );
 
