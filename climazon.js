@@ -358,7 +358,7 @@ function buyPlanet() {
                 var snum = parseFloat(response[i].fpl_snum) * 5;
                 var dist = parseFloat(response[i].fst_dist) * 2.75 * 100 / 100;
                 var age = parseFloat(response[i].fst_age) * 0.5;
-                var purchasePrice = (dist - orbper - eccen - rade + eqt + snum - age);
+                var purchasePrice = dist - orbper - eccen - rade + eqt + snum - age;
 
                 console.log(" rowid: "
                     + response[i].rowid
