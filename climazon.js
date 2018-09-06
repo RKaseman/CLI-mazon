@@ -6,6 +6,8 @@ var StringDecoder = require("string_decoder").StringDecoder;
 var decoder = new StringDecoder("utf8");
 var deg = Buffer([0xC2, 0xB0]);
 
+var inventory = [];
+
 var format32 = "\n--------------------------------\n";
 var format48 = "\n------------------------------------------------";
 
@@ -30,7 +32,7 @@ function search() {
     inquirer.prompt({
         type: "list",
         name: "choiceOne",
-        message: "Browse exoplanets for sale",
+        message: "Browse exoplanets for sale (WARNING: some search results can be lenthy!)",
         choices: [
             "Find a planet by name or search a combination of characters",
             "Filter by Discovery Year",
@@ -39,7 +41,8 @@ function search() {
             "Filter by number of Suns",
             "Filter by Distance (in parsecs)",
             "Filter by Stellar Age (in gigayears)",
-            "Buy a planet"
+            "Buy a planet",
+            "Order history"
         ]
     }).then(function (answers) {
         switch (answers.choiceOne) {
@@ -74,6 +77,10 @@ function search() {
             case "Buy a planet":
                 buyPlanet();
                 break;
+
+            case "Order history":
+                orderHistory();
+                break;
         }
     });
 };
@@ -89,9 +96,13 @@ function nameFind() {
         var planetName = "SELECT * FROM planets WHERE fpl_name LIKE '%" + answers.planet + "%'";
         connection.query(planetName, function (error, response) {
             if (error) throw error;
-                console.log(format48
-                    + "\n Planetary Data Results for '" + answers.planet + "'"
-                    + format48);
+            if (response == 0) {
+                console.log("No results. Try again.");
+                nameFind();
+            } else {
+            console.log(format48
+                + "\n Planetary Data Results for '" + answers.planet + "'"
+                + format48);
             for (var i = 0; i < response.length; i++) {
                 console.log("                 Planet name: " + response[i].fpl_name
                     + "\n            Discovery Method: " + response[i].fpl_discmethod
@@ -108,8 +119,9 @@ function nameFind() {
                     + "\nStellar Age [Gyr (gigayear)]: " + response[i].fst_age
                     + "\n                   Purchased: " + response[i].rmk_cust
                     + format48);
-            }
+                }
             buyNow();
+            }
         });
     });
 };
@@ -125,13 +137,18 @@ function discFilter() {
         var planetDisc = "SELECT * FROM planets WHERE ?";
         connection.query(planetDisc, { fpl_disc: answers.discovered }, function (error, response) {
             if (error) throw error;
+            if (response == 0) {
+                console.log("No results. Try again.");
+                discFilter();
+            } else {
             console.log(format48
                 + "\n Planets discovered in " + answers.discovered + ":"
                 + format48);
             for (var i = 0; i < response.length; i++) {
                 console.log(response[i].rowid + ". " + response[i].fpl_name);
-            }
+                }
             buyNow();
+            }
         });
     });
 };
@@ -149,15 +166,20 @@ function orbperFilter() {
         var planetOrbPer = "SELECT * FROM planets WHERE fpl_orbper BETWEEN " + orbPerLow + " AND " + orbPerHigh;
         connection.query(planetOrbPer, function (error, response) {
             if (error) throw error;
+            if (response == 0) {
+                console.log("No results. Try again.");
+                orbperFilter();
+            } else {
             console.log(format48
-                + "\n Orbital Period +/- 5 days: " + answers.orbitalPeriod
+                + "\n Orbital Period " + answers.orbitalPeriod + " days (+/- 5)"
                 + format48);
             for (var i = 0; i < response.length; i++) {
                 console.log("                   Full name: " + response[i].fpl_name
                     + "\n       Orbital Period [days]: " + response[i].fpl_orbper
                     + format48);
-            }
+                }
             buyNow();
+            }
         });
     });
 };
@@ -175,6 +197,10 @@ function bmasseFilter() {
         var planetMass = "SELECT * FROM planets WHERE fpl_bmasse BETWEEN " + earthMassLow + " AND " + earthMassHigh;
         connection.query(planetMass, function (error, response) {
             if (error) throw error;
+            if (response == 0) {
+                console.log("No results. Try again.");
+                bmasseFilter();
+            } else {
             console.log(format48
                 + "\n Planet Mass +/- 0.5 of earth mass: " + answers.earthMass
                 + format48);
@@ -183,8 +209,9 @@ function bmasseFilter() {
                     + "\n    Planet Mass [Earth mass]: " + response[i].fpl_bmasse
                     + "\n  Planet Mass [Jupiter mass]: " + response[i].fpl_bmassj
                     + format48);
-            }
+                }
             buyNow();
+            }
         });
     });
 };
@@ -200,6 +227,10 @@ function snumFilter() {
         var sunNumber = "SELECT * FROM planets WHERE ?";
         connection.query(sunNumber, { fpl_snum: answers.sunCount }, function (error, response) {
             if (error) throw error;
+            if (response == 0) {
+                console.log("No results. Try again.");
+                snumFilter();
+            } else {
             console.log(format48
                 + "\n Number of suns: " + answers.sunCount
                 + format48);
@@ -211,8 +242,9 @@ function snumFilter() {
                     + " (" + ((((parseFloat(response[i].fpl_eqt) * 9 / 5) * 10000) - (459.67 * 10000)) / 10000) + decoder.write(deg) + "F)"
                     + "\n   Number of Stars in System: " + response[i].fpl_snum
                     + format48);
-            }
+                }
             buyNow();
+            }
         });
     });
 };
@@ -231,6 +263,10 @@ function distFilter() {
         var planetDist = "SELECT * FROM planets WHERE fst_dist BETWEEN " + distLow + " AND " + distHigh;
         connection.query(planetDist, function (error, response) {
             if (error) throw error;
+            if (response == 0) {
+                console.log("No results. Try again.");
+                distFilter();
+            } else {
             console.log(format48
                 + "\n Distance in parsecs +/- 0.5: " + answers.distance
                 + format48);
@@ -239,8 +275,9 @@ function distFilter() {
                     + "\n      Distance [pc (parsec)]: " + response[i].fst_dist
                     + "\nStellar Age [Gyr (gigayear)]: " + response[i].fst_age
                     + format48);
-            }
+                }
             buyNow();
+            }
         });
     });
 };
@@ -259,6 +296,10 @@ function starAgeFilter() {
         var starAge = "SELECT * FROM planets WHERE fst_age BETWEEN " + stellarAgeLow + " AND " + stellarAgeHigh;
         connection.query(starAge, function (error, response) {
             if (error) throw error;
+            if (response == 0) {
+                console.log("No results. Try again.");
+                starAgeFilter();
+            } else {
             console.log(format48
                 + "\n Stellar Age in gigayears +/- 0.4: " + answers.stellarAge
                 + format48);
@@ -271,8 +312,9 @@ function starAgeFilter() {
                     + "\n      Distance [pc (parsec)]: " + response[i].fst_dist
                     + "\nStellar Age [Gyr (gigayear)]: " + response[i].fst_age
                     + format48);
-            }
+                }
             buyNow();
+            }
         });
     });
 };
@@ -313,20 +355,20 @@ function buyPlanet() {
                 var snum = parseFloat(response[i].fpl_snum) * 5;
                 var dist = parseFloat(response[i].fst_dist) * 2.75;
                 var age = parseFloat(response[i].fst_age) * 0.5;
-                var purchasePrice = dist - orbper - eccen - rade + eqt + snum - age;
+                var purchasePrice = (dist - orbper - eccen - rade + eqt + snum - age);
 
                 console.log(" rowid: " 
                     + response[i].rowid 
                     + ", " + response[i].fpl_name 
-                    + ", " + orbper 
+                    + ", " + orbper * 100 / 100
                     + ", " + eccen 
-                    + ", " + rade 
+                    + ", " + rade * 100 / 100
                     + ", " + eqt 
                     + ", " + snum 
                     + ", " + dist 
                     + ", " + age);
 
-                console.log("Purchase price for \n" + response[i].fpl_name + "\n is $" + purchasePrice + " billion");
+                console.log("Purchase price for \n " + response[i].fpl_name + "\nis $" + purchasePrice + " billion");
                 var updateData = response[i].rowid;
                 inquirer.prompt({
                     type: "confirm",
@@ -334,17 +376,38 @@ function buyPlanet() {
                     message: "Buy the planet",
                     default: true
                 }).then(function (yesBuy) {
-                    if (yesBuy.yesToBuy === true) {
+                    if (yesBuy.yesToBuy === true && response[i].rmk_cust === false) {
                         connection.query("UPDATE planets SET ? WHERE ?",
                         [{rmk_cust: true},{rowid: updateData}], function (error, response) {
                             if (error) throw error;
-                            console.log(response.affectedRows + " purchased");
+                            console.log(format32 + response.affectedRows + " purchase");
+                            orderHistory();
                         }
-                    )}
-                nameFind();
+                    )} else {
+                        console.log("Already purchased")
+                        orderHistory();
+                        search();
+                    }
                 })
             }
         });
+    });
+};
+
+
+function orderHistory() {
+    console.log(format32 + "-|     Planets purchased      |-" + format32);
+    connection.query("SELECT * FROM planets WHERE rmk_cust = 1", function(error, response) {
+        if (error) throw error;
+        for (var i = 0; i < response.length; i++) {
+            console.log(response[i].rowid + ". " + response[i].fpl_name);
+        }
+        console.log(format32);
+        search();
+    });
+};
+
+
         // inquirer.prompt({
         //     type: "list",
         //     name: "quantity",
@@ -370,11 +433,9 @@ function buyPlanet() {
 
         //     }
         // });
-    });
-};
+
 
 //     // updateEntry();
-
 
 //     function updateEntry() {
 
@@ -393,21 +454,6 @@ function buyPlanet() {
 //         });
 //         console.log("Updated bid: " + itemValue);
 //     };
-
-
-    // readDB();
-
-
-function readDB() {
-    console.log("Searching...");
-
-    connection.query("SELECT * FROM planets WHERE rmk_cust = 1", function(error, response) {
-        if (error) throw error;
-        console.log(response);
-        console.log("success!");
-
-        });
-    };
 
 
     // connection.end();
