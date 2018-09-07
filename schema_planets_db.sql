@@ -4,7 +4,7 @@ CREATE DATABASE climazon_db;
 USE climazon_db;
 
 CREATE TABLE planets (
-    rowid INTEGER(4) NOT NULL,
+    loc_rowid INTEGER(4) NOT NULL,
     fpl_hostname VARCHAR(200) NULL,
     fpl_letter VARCHAR(1) NULL,
     fpl_name VARCHAR(200) NULL,
@@ -25,7 +25,7 @@ CREATE TABLE planets (
     fst_mass FLOAT NULL,
     fst_rad FLOAT NULL,
     fst_age FLOAT NULL,
-    rmk_cust BOOLEAN DEFAULT false,
-    PRIMARY KEY (rowid)
+    rmk_cust BOOLEAN NOT NULL,
+    PRIMARY KEY (loc_rowid)
 );
 

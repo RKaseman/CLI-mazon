@@ -97,13 +97,13 @@ function nameFind() {
     inquirer.prompt({
         type: "input",
         name: "planet",
-        message: "\nEnter a planet name (full or partial)\n"
+        message: "Enter a planet name (full or partial)"
     }).then(function (answers) {
         var planetName = "SELECT * FROM planets WHERE fpl_name LIKE '%" + answers.planet + "%'";
         connection.query(planetName, function (error, response) {
             if (error) throw error;
             if (response == 0) {
-                console.log("No results. Try again.");
+                console.log(format32 + "\nNo results. Try again.\n" + format32);
                 nameFind();
             } else {
                 console.log("\n" + format48
@@ -138,20 +138,20 @@ function discFilter() {
     inquirer.prompt({
         type: "input",
         name: "discovered",
-        message: "\nEnter the year to search (1989, 1992, 1994-present).\n"
+        message: "Enter the year to search (1989, 1992, 1994-present)."
     }).then(function (answers) {
         var planetDisc = "SELECT * FROM planets WHERE ?";
         connection.query(planetDisc, { fpl_disc: answers.discovered }, function (error, response) {
             if (error) throw error;
             if (response == 0) {
-                console.log("No results. Try again.");
+                console.log(format32 + "\nNo results. Try again.\n" + format32);
                 discFilter();
             } else {
                 console.log("\n" + format48
                     + "\n Planets discovered in " + answers.discovered + ":"
                     + "\n" + format48);
                 for (var i = 0; i < response.length; i++) {
-                    console.log(response[i].rowid + ". " + response[i].fpl_name);
+                    console.log(response[i].loc_rowid + ". " + response[i].fpl_name);
                 }
                 buyNow();
             }
@@ -165,7 +165,7 @@ function orbperFilter() {
     inquirer.prompt({
         type: "input",
         name: "orbitalPeriod",
-        message: "\nEnter the length of a year in days (0.09-7300000)\n"
+        message: "Enter the length of a year in days (0.09-7300000)"
     }).then(function (answers) {
         var orbPerLow = parseFloat(answers.orbitalPeriod) - 5;
         var orbPerHigh = parseFloat(answers.orbitalPeriod) + 5;
@@ -173,7 +173,7 @@ function orbperFilter() {
         connection.query(planetOrbPer, function (error, response) {
             if (error) throw error;
             if (response == 0) {
-                console.log("No results. Try again.");
+                console.log(format32 + "\nNo results. Try again.\n" + format32);
                 orbperFilter();
             } else {
                 console.log("\n" + format48
@@ -196,7 +196,7 @@ function bmasseFilter() {
     inquirer.prompt({
         type: "input",
         name: "earthMass",
-        message: "\nEnter size (1 = earth mass)\n"
+        message: "Enter size (1 = earth mass)"
     }).then(function (answers) {
         var earthMassLow = parseFloat(answers.earthMass) - 0.5;
         var earthMassHigh = parseFloat(answers.earthMass) + 0.5;
@@ -228,7 +228,7 @@ function snumFilter() {
     inquirer.prompt({
         type: "input",
         name: "sunCount",
-        message: "\nEnter the number of suns (1-4)\n"
+        message: "Enter the number of suns (1-4)"
     }).then(function (answers) {
         var sunNumber = "SELECT * FROM planets WHERE ?";
         connection.query(sunNumber, { fpl_snum: answers.sunCount }, function (error, response) {
@@ -261,7 +261,7 @@ function distFilter() {
     inquirer.prompt({
         type: "input",
         name: "distance",
-        message: "\nEnter the distance in parsecs (1 parsec = 19 trillion miles)\n"
+        message: "Enter the distance in parsecs (1 parsec = 19 trillion miles)"
     }).then(function (answers) {
         var distLow = parseFloat(answers.distance) - 0.5;
         var distHigh = parseFloat(answers.distance) + 0.5;
@@ -293,7 +293,7 @@ function starAgeFilter() {
     inquirer.prompt({
         type: "input",
         name: "stellarAge",
-        message: "\nEnter the star age in gigayears (1 gigayear = 1 billion years)\n"
+        message: "Enter the star age in gigayears (1 gigayear = 1 billion years)"
     }).then(function (answers) {
         var stellarAgeLow = parseFloat(answers.stellarAge) - 0.4;
         var stellarAgeHigh = parseFloat(answers.stellarAge) + 0.4;
@@ -346,7 +346,7 @@ function buyPlanet() {
     inquirer.prompt({
         type: "input",
         name: "whichPlanet",
-        message: "\nEnter the planet you wish to buy:\n"
+        message: "Confirm the planet you wish to buy:"
     }).then(function (answers) {
         connection.query("SELECT * FROM planets WHERE fpl_name ='" + answers.whichPlanet + "'", function (error, response) {
             if (error) throw error;
@@ -360,8 +360,8 @@ function buyPlanet() {
                 var age = parseFloat(response[i].fst_age) * 0.5;
                 var purchasePrice = dist - orbper - eccen - rade + eqt + snum - age;
 
-                console.log(" rowid: "
-                    + response[i].rowid
+                console.log(" loc_rowid: "
+                    + response[i].loc_rowid
                     + ", " + response[i].fpl_name
                     + ", " + orbper
                     + ", " + eccen
@@ -372,7 +372,7 @@ function buyPlanet() {
                     + ", " + age);
 
                 console.log("Purchase price for \n " + response[i].fpl_name + "\nis $" + purchasePrice + " billion");
-                var updateData = response[i].rowid;
+                var updateData = response[i].loc_rowid;
                 var condition = response[i].rmk_cust;
                 console.log("condition = " + condition);
                 inquirer.prompt({
@@ -381,9 +381,9 @@ function buyPlanet() {
                     message: "Buy the planet",
                     default: true
                 }).then(function (yesBuy) {
-                    if (yesBuy.yesToBuy === true && condition === false) {
+                    if (yesBuy.yesToBuy === true && condition === 0) {
                         connection.query("UPDATE planets SET ? WHERE ?",
-                            [{ rmk_cust: true }, { rowid: updateData }], function (error, response) {
+                            [{ rmk_cust: 1 }, { loc_rowid: updateData }], function (error, response) {
                                 if (error) throw error;
                                 console.log("\n" + format32 + "\n" + response.affectedRows + " purchase");
                                 orderHistory();
@@ -405,7 +405,7 @@ function orderHistory() {
     connection.query("SELECT * FROM planets WHERE rmk_cust = 1", function (error, response) {
         if (error) throw error;
         for (var i = 0; i < response.length; i++) {
-            console.log(response[i].rowid + ". " + response[i].fpl_name);
+            console.log(response[i].loc_rowid + ". " + response[i].fpl_name);
         }
         console.log("\n" + format32 + "\n");
         search();
