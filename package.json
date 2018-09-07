@@ -1,22 +1,22 @@
 {
-  "name": "CLI-mazon",
+  "name": "EXPA-mazon",
   "version": "1.0.0",
   "description": "[instructions]",
-  "main": "climazon.js",
+  "main": "expamazon.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/RKaseman/CLI-mazon.git"
+    "url": "git+https://github.com/RKaseman/EXPA-mazon.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/RKaseman/CLI-mazon/issues"
+    "url": "https://github.com/RKaseman/EXPA-mazon/issues"
   },
-  "homepage": "https://github.com/RKaseman/CLI-mazon#readme",
+  "homepage": "https://github.com/RKaseman/EXPA-mazon#readme",
   "dependencies": {
     "inquirer": "^6.2.0",
     "mysql": "^2.16.0"
