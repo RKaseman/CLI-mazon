@@ -2,9 +2,11 @@
 var mysql = require("mysql");
 var inquirer = require("inquirer");
 
+
 var StringDecoder = require("string_decoder").StringDecoder;
 var decoder = new StringDecoder("utf8");
 var deg = Buffer([0xC2, 0xB0]);
+
 
 var connection = mysql.createConnection({
     host: "localhost",
@@ -19,6 +21,7 @@ connection.connect(function (error) {
     if (error) throw error;
     console.log("--------------------------------");
     console.log("-|   Connected to God Node    |-");
+    console.log("-|   The Ultimate Getaway     |-");
     console.log("--------------------------------");
     search();
 });
@@ -93,7 +96,7 @@ function nameFind() {
     inquirer.prompt({
         type: "input",
         name: "planet",
-        message: "Enter a planet name (full or partial)"
+        message: "Enter a planet name (full or partial search)"
     }).then(function (answers) {
         var planetName = "SELECT * FROM planets WHERE fpl_name LIKE '%" + answers.planet + "%'";
         connection.query(planetName, function (error, response) {
@@ -121,7 +124,7 @@ function nameFind() {
                     + "\n   Number of Stars in System: " + response[i].fpl_snum
                     + "\n      Distance [pc (parsec)]: " + response[i].fst_dist
                     + "\nStellar Age [Gyr (gigayear)]: " + response[i].fst_age
-                    + "\n                   Purchased: " + response[i].rmk_cust);
+                    + "\n     Purchased (0=no, 1=yes): " + response[i].rmk_cust);
                     console.log("------------------------------------------------");
                 }
                 buyNow();
@@ -151,7 +154,9 @@ function discFilter() {
                 console.log(" Planets discovered in " + answers.discovered + ":");
                 console.log("------------------------------------------------");
                 for (var i = 0; i < response.length; i++) {
-                    console.log(response[i].loc_rowid + ". " + response[i].fpl_name);
+                    console.log(response[i].loc_rowid + ". " + response[i].fpl_name
+                    + "\n    Planet Mass [Earth mass]: " + response[i].fpl_bmasse
+                    + "\n      Distance [pc (parsec)]: " + response[i].fst_dist);
                     console.log("------------------------------------------------");
                 }
                 buyNow();
@@ -372,7 +377,7 @@ function buyPlanet() {
                 var age = parseFloat(response[i].fst_age);
                 purchasePrice = parseFloat(dist - orbper - eccen - rade + eqt + snum - age);
                 console.log("------------------------------------------------");
-                console.log("Purchase price for \n " + response[i].fpl_name + "\nis $" + purchasePrice + " billion");
+                console.log("Purchase price for\n " + response[i].fpl_name + "\nis $" + purchasePrice + " billion");
                 console.log("------------------------------------------------");
                 var condition = response[i].rmk_cust;
                 var updateData = response[i].loc_rowid;
@@ -406,6 +411,8 @@ function buyPlanet() {
 };
 
 
+var costs = [];
+
 function orderHistory() {
     console.log("--------------------------------");
     console.log("-|     Planets purchased      |-");
@@ -413,8 +420,24 @@ function orderHistory() {
     connection.query("SELECT * FROM planets WHERE rmk_cust = 1", function (error, response) {
         if (error) throw error;
         for (var i = 0; i < response.length; i++) {
-            console.log(response[i].loc_rowid + ". " + response[i].fpl_name);
+            var orbper = parseFloat(response[i].fpl_orbper);
+            var eccen = parseFloat(response[i].fpl_eccen);
+            var rade = parseFloat(response[i].fpl_rade);
+            var eqt = parseFloat(response[i].fpl_eqt);
+            var snum = parseFloat(response[i].fpl_snum);
+            var dist = parseFloat(response[i].fst_dist);
+            var age = parseFloat(response[i].fst_age);
+            // console.log("array = " + costs);
+            var sum = 0;
+            purchasePrice = parseFloat(dist - orbper - eccen - rade + eqt + snum - age);
+            costs.push(purchasePrice);
+            console.log(response[i].loc_rowid + ". " + response[i].fpl_name + " $" + purchasePrice);
+            for (j = 0; j < costs.length; j++) {
+            sum += costs[j];
+            }
         }
+        console.log("- - - - - - - - - - - - - - - - ");
+        console.log("Total: $" + sum + " billion");
         console.log("--------------------------------");
         search();
     });
