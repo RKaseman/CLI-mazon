@@ -1,4 +1,4 @@
-# CLI-mazon
+# EXPA-mazon (Exoplanet Archive Marketplace)
 
 [instructions]
 

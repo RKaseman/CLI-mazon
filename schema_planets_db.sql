@@ -1,7 +1,7 @@
 
-DROP DATABASE IF EXISTS climazon_db;
-CREATE DATABASE climazon_db;
-USE climazon_db;
+DROP DATABASE IF EXISTS expamazon_db;
+CREATE DATABASE expamazon_db;
+USE expamazon_db;
 
 CREATE TABLE planets (
     loc_rowid INTEGER(4) NOT NULL,

@@ -1,5 +1,5 @@
 
-USE climazon_db;
+USE expamazon_db;
 
 INSERT INTO planets (
     loc_rowid,
