@@ -353,9 +353,6 @@ function buyNow() {
 };
 
 
-var purchasePrice;
-
-
 // for case "Buy a planet"
 function buyPlanet() {
     inquirer.prompt({
@@ -373,18 +370,7 @@ function buyPlanet() {
                 var snum = parseFloat(response[i].fpl_snum);
                 var dist = parseFloat(response[i].fst_dist);
                 var age = parseFloat(response[i].fst_age);
-                purchasePrice = dist - orbper - eccen - rade + eqt + snum - age;
-                console.log(" loc_rowid: "
-                    + response[i].loc_rowid
-                    + ", " + response[i].fpl_name
-                    + ", " + orbper
-                    + ", " + eccen
-                    + ", " + rade
-                    + ", " + eqt
-                    + ", " + snum
-                    + ", " + dist
-                    + ", " + age);
-
+                purchasePrice = parseFloat(dist - orbper - eccen - rade + eqt + snum - age);
                 console.log("------------------------------------------------");
                 console.log("Purchase price for \n " + response[i].fpl_name + "\nis $" + purchasePrice + " billion");
                 console.log("------------------------------------------------");
@@ -438,53 +424,4 @@ function orderHistory() {
 function quitCLI() {
     connection.end();
 };
-
-
-        // inquirer.prompt({
-        //     type: "list",
-        //     name: "quantity",
-        //     message: "Purchase options:",
-        //     choices: [
-        //         "Buy whole planet",
-        //         "Buy a hemisphere",
-        //         "Buy a quarter",
-        //     ]
-        // }).then(function (answers) {
-        //     switch (answers.quantity) {
-        //         case "Buy whole planet":
-        //             buyWhole();
-        //             break;
-
-        //         case "Buy a hemisphere":
-        //             buyHalf();
-        //             break;
-
-        //         case "Buy a quarter":
-        //             buyQuarter();
-        //             break;
-
-        //     }
-        // });
-
-
-//     // updateEntry();
-
-//     function updateEntry() {
-
-//         var query = connection.query(
-//             "UPDATE auctions SET itemValue WHERE item = query.sql",
-//             [{
-//                 itemValue: query.sql
-//             }],
-//             function(error, response) {
-//                 if (error) throw error;
-//                 console.log("error = " + error);
-//                 console.log("response.affectedRows = " 
-//                     + response.affectedRows 
-//                     + " updated.\n")
-
-//         });
-//         console.log("Updated bid: " + itemValue);
-//     };
-
 
