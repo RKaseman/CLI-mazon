@@ -6,8 +6,6 @@ var StringDecoder = require("string_decoder").StringDecoder;
 var decoder = new StringDecoder("utf8");
 var deg = Buffer([0xC2, 0xB0]);
 
-var inventory = [];
-
 var format32 = "--------------------------------";
 var format48 = "------------------------------------------------";
 
@@ -33,7 +31,7 @@ function search() {
     inquirer.prompt({
         type: "list",
         name: "choiceOne",
-        message: "Browse exoplanets for sale (WARNING: some search results can be lengthy!)\n",
+        message: "Browse exoplanets for sale (WARNING: some search results can be lengthy!)\n ",
         choices: [
             "Find a planet by name or search a combination of characters",
             "Filter by Discovery Year",
@@ -341,6 +339,9 @@ function buyNow() {
 };
 
 
+var purchasePrice;
+
+
 // for case "Buy a planet"
 function buyPlanet() {
     inquirer.prompt({
@@ -351,15 +352,14 @@ function buyPlanet() {
         connection.query("SELECT * FROM planets WHERE fpl_name ='" + answers.whichPlanet + "'", function (error, response) {
             if (error) throw error;
             for (var i = 0; i < response.length; i++) {
-                var orbper = parseFloat(response[i].fpl_orbper) / 10 * 100 / 100;
-                var eccen = parseFloat(response[i].fpl_eccen) * 2;
-                var rade = parseFloat(response[i].fpl_rade) * 1.5 * 100 / 100;
-                var eqt = parseFloat(response[i].fpl_eqt) * 3.5;
-                var snum = parseFloat(response[i].fpl_snum) * 5;
-                var dist = parseFloat(response[i].fst_dist) * 2.75 * 100 / 100;
-                var age = parseFloat(response[i].fst_age) * 0.5;
-                var purchasePrice = dist - orbper - eccen - rade + eqt + snum - age;
-
+                var orbper = parseFloat(response[i].fpl_orbper);
+                var eccen = parseFloat(response[i].fpl_eccen);
+                var rade = parseFloat(response[i].fpl_rade);
+                var eqt = parseFloat(response[i].fpl_eqt);
+                var snum = parseFloat(response[i].fpl_snum);
+                var dist = parseFloat(response[i].fst_dist);
+                var age = parseFloat(response[i].fst_age);
+                purchasePrice = dist - orbper - eccen - rade + eqt + snum - age;
                 console.log(" loc_rowid: "
                     + response[i].loc_rowid
                     + ", " + response[i].fpl_name
@@ -372,9 +372,9 @@ function buyPlanet() {
                     + ", " + age);
 
                 console.log("Purchase price for \n " + response[i].fpl_name + "\nis $" + purchasePrice + " billion");
-                var updateData = response[i].loc_rowid;
                 var condition = response[i].rmk_cust;
-                console.log("condition = " + condition);
+                var updateData = response[i].loc_rowid;
+                var buyName = response[i].fpl_name;
                 inquirer.prompt({
                     type: "confirm",
                     name: "yesToBuy",
@@ -382,10 +382,10 @@ function buyPlanet() {
                     default: true
                 }).then(function (yesBuy) {
                     if (yesBuy.yesToBuy === true && condition === 0) {
-                        connection.query("UPDATE planets SET ? WHERE ?",
-                            [{ rmk_cust: 1 }, { loc_rowid: updateData }], function (error, response) {
+                        connection.query("UPDATE planets SET rmk_cust = 1 WHERE ?",
+                            [{ loc_rowid: updateData }], function (error, response) {
                                 if (error) throw error;
-                                console.log("\n" + format32 + "\n" + response.affectedRows + " purchase");
+                                console.log("\n" + format32 + "\n " + buyName + " purchased");
                                 orderHistory();
                             }
                         )
