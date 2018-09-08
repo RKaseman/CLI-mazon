@@ -406,7 +406,7 @@ function buyPlanet() {
                 var age = response[i].fst_age;
                 // an arbitrary calculation of cost. Roughly based on extremity of
                 // variation from earth values.
-                purchasePrice = (parseFloat(dist - orbper - eccen - rade + eqt + snum - age) * 1000) / 1000;
+                purchasePrice = (parseFloat(dist - orbper - eccen - rade + eqt + snum - age) * 100) / 100;
                 console.log("------------------------------------------------");
                 console.log("Purchase price for\n " + response[i].fpl_name + "\nis $" + purchasePrice + " billion");
                 console.log("------------------------------------------------");
@@ -458,16 +458,16 @@ function orderHistory() {
         if (error) throw error;
         for (var i = 0; i < response.length; i++) {
             // same cost calculation as above
-            var orbper = (response[i].fpl_orbper);
-            var eccen = (response[i].fpl_eccen);
-            var rade = (response[i].fpl_rade);
-            var eqt = (response[i].fpl_eqt);
-            var snum = (response[i].fpl_snum);
-            var dist = (response[i].fst_dist);
-            var age = (response[i].fst_age);
+            var orbper = response[i].fpl_orbper;
+            var eccen = response[i].fpl_eccen;
+            var rade = response[i].fpl_rade;
+            var eqt = response[i].fpl_eqt;
+            var snum = response[i].fpl_snum;
+            var dist = response[i].fst_dist;
+            var age = response[i].fst_age;
             // initial variable for total purchases
             var sum = 0;
-            purchasePrice = (parseFloat(dist - orbper - eccen - rade + eqt + snum - age) * 1000) / 1000;
+            purchasePrice = Math.round(parseFloat(dist - orbper - eccen - rade + eqt + snum - age) * Math.pow(10,4)) / Math.pow(10,4);
             // adds each purchase price to the var costs array
             costs.push(purchasePrice);
             // list of purchases and cost
