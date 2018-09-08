@@ -442,6 +442,7 @@ function buyPlanet() {
                         message: "Buy the planet",
                         default: true
                     }).then(function (yesBuy) {
+                        // if user changes their mind about buying
                         if (yesBuy.yesToBuy === false) {
                             search();
                         }
