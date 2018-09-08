@@ -6,7 +6,7 @@
 
 ## Overview
 
-The task was to create 
+### The task was to create 
 * an Amazon-like storefront
 * take in orders from customers and deplete stock from the store's inventory
 * provide a summary of the highest-grossing departments in the store
@@ -15,13 +15,13 @@ I didn't follow the instructions to the letter. I created my mock store to sell 
 
 - - -
 
-I experienced the following types of errors when importing the database file into HeidiSQL:
+I experienced 2 types of errors when importing the `.csv` database file into HeidiSQL:
 ```
 /* Warning (1265): Data truncated for column 'fpl_eqt' at row 1 */
 /* Warning (1366): Incorrect integer value: '' for column 'rmk_cust' at row 1 */
 ```
 
-I couldn't find an answer for eliminating them and they don't seem to affect the performance I wanted from the database.
+I couldn't find an answer for eliminating them and they don't seem to affect the performance I wanted from the database. An image of the import settings I used is included in the files.
 
 <!-- ### Add To Your Portfolio -->
 

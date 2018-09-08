@@ -168,9 +168,13 @@ function discFilter() {
                 console.log(" Planets discovered in " + answers.discovered + ":");
                 console.log("------------------------------------------------");
                 for (var i = 0; i < response.length; i++) {
-                    console.log(response[i].loc_rowid + ". " + response[i].fpl_name
+                    console.log("              Archive number: " + response[i].loc_rowid
+                    + "\n                 Planet Name: " + response[i].fpl_name
+                    + "\n            Discovery Method: " + response[i].fpl_discmethod
                     + "\n    Planet Mass [Earth mass]: " + response[i].fpl_bmasse
-                    + "\n      Distance [pc (parsec)]: " + response[i].fst_dist);
+                    + "\n Planet Radius [Earth radii]: " + response[i].fpl_rade
+                    + "\n      Distance [pc (parsec)]: " + response[i].fst_dist
+                    + "\n     Purchased (0=no, 1=yes): " + response[i].rmk_cust);
                     console.log("------------------------------------------------");
                 }
                 buyNow();
@@ -205,7 +209,11 @@ function orbperFilter() {
                 console.log("------------------------------------------------");
                 for (var i = 0; i < response.length; i++) {
                     console.log("                   Full name: " + response[i].fpl_name
-                    + "\n       Orbital Period [days]: " + response[i].fpl_orbper);
+                    + "\n       Orbital Period [days]: " + response[i].fpl_orbper
+                    + "\n    Planet Mass [Earth mass]: " + response[i].fpl_bmasse
+                    + "\n Planet Radius [Earth radii]: " + response[i].fpl_rade
+                    + "\n      Distance [pc (parsec)]: " + response[i].fst_dist
+                    + "\n     Purchased (0=no, 1=yes): " + response[i].rmk_cust);
                     console.log("------------------------------------------------");
                 }
                 buyNow();
@@ -223,9 +231,9 @@ function bmasseFilter() {
         // mass reference given
         message: "Enter size (1 = earth mass)"
     }).then(function (answers) {
-        var earthMassLow = parseFloat(answers.earthMass) - 0.5;
-        var earthMassHigh = parseFloat(answers.earthMass) + 0.5;
-        // user input plus or minus 0.5 earth masses used as search range to increase odds of results
+        var earthMassLow = parseFloat(answers.earthMass) - 0.1;
+        var earthMassHigh = parseFloat(answers.earthMass) + 0.1;
+        // user input plus or minus 0.1 earth masses used as search range to limit results
         var planetMass = "SELECT * FROM planets WHERE fpl_bmasse BETWEEN " + earthMassLow + " AND " + earthMassHigh;
         connection.query(planetMass, function (error, response) {
             if (error) throw error;
@@ -236,12 +244,14 @@ function bmasseFilter() {
                 bmasseFilter();
             } else {
                 console.log("------------------------------------------------");
-                console.log(" Planet Mass +/- 0.5 of earth mass: " + answers.earthMass);
+                console.log(" Planet Mass +/- 0.1 of earth mass: " + answers.earthMass);
                 console.log("------------------------------------------------");
                 for (var i = 0; i < response.length; i++) {
                     console.log("                   Full name: " + response[i].fpl_name
                     + "\n    Planet Mass [Earth mass]: " + response[i].fpl_bmasse
-                    + "\n  Planet Mass [Jupiter mass]: " + response[i].fpl_bmassj);
+                    + "\n  Planet Mass [Jupiter mass]: " + response[i].fpl_bmassj
+                    + "\n Planet Radius [Earth radii]: " + response[i].fpl_rade
+                    + "\n     Purchased (0=no, 1=yes): " + response[i].rmk_cust);
                     console.log("------------------------------------------------");
                 }
                 buyNow();
@@ -275,9 +285,12 @@ function snumFilter() {
                     console.log("                   Full name: " + response[i].fpl_name
                     + "\n            Discovery Method: " + response[i].fpl_discmethod
                     + "\n                Eccentricity: " + response[i].fpl_eccen
+                    + "\n    Planet Mass [Earth mass]: " + response[i].fpl_bmasse
+                    + "\n Planet Radius [Earth radii]: " + response[i].fpl_rade
                     + "\n Equilibrium Temperature [K]: " + response[i].fpl_eqt
                     + " (" + ((((parseFloat(response[i].fpl_eqt) * 9 / 5) * 10000) - (459.67 * 10000)) / 10000) + decoder.write(deg) + "F)"
-                    + "\n   Number of Stars in System: " + response[i].fpl_snum);
+                    + "\n   Number of Stars in System: " + response[i].fpl_snum
+                    + "\n     Purchased (0=no, 1=yes): " + response[i].rmk_cust);
                     console.log("------------------------------------------------");
                 }
                 buyNow();
@@ -312,8 +325,11 @@ function distFilter() {
                 console.log("------------------------------------------------");
                 for (var i = 0; i < response.length; i++) {
                     console.log("                   Full name: " + response[i].fpl_name
+                    + "\n    Planet Mass [Earth mass]: " + response[i].fpl_bmasse
+                    + "\n Planet Radius [Earth radii]: " + response[i].fpl_rade
                     + "\n      Distance [pc (parsec)]: " + response[i].fst_dist
-                    + "\nStellar Age [Gyr (gigayear)]: " + response[i].fst_age);
+                    + "\nStellar Age [Gyr (gigayear)]: " + response[i].fst_age
+                    + "\n     Purchased (0=no, 1=yes): " + response[i].rmk_cust);
                     console.log("------------------------------------------------");
                 }
                 buyNow();
@@ -331,9 +347,9 @@ function starAgeFilter() {
         // reference age and search range given
         message: "Enter the star age in gigayears (1 gigayear = 1 billion years, 0.001-13.4)"
     }).then(function (answers) {
-        var stellarAgeLow = parseFloat(answers.stellarAge) - 0.4;
-        var stellarAgeHigh = parseFloat(answers.stellarAge) + 0.4;
-        // user input plus or minus 0.4 parsecs used as search range to increase odds of results
+        var stellarAgeLow = parseFloat(answers.stellarAge) - 0.2;
+        var stellarAgeHigh = parseFloat(answers.stellarAge) + 0.2;
+        // user input plus or minus 0.2 parsecs used as search range to limit results
         var starAge = "SELECT * FROM planets WHERE fst_age BETWEEN " + stellarAgeLow + " AND " + stellarAgeHigh;
         connection.query(starAge, function (error, response) {
             if (error) throw error;
@@ -344,7 +360,7 @@ function starAgeFilter() {
                 starAgeFilter();
             } else {
                 console.log("------------------------------------------------");
-                console.log(" Stellar Age " + answers.stellarAge + " gigayears +/- 0.4");
+                console.log(" Stellar Age " + answers.stellarAge + " gigayears +/- 0.2");
                 console.log("------------------------------------------------");
                 for (var i = 0; i < response.length; i++) {
                     console.log("                   Full name: " + response[i].fpl_name
@@ -353,7 +369,8 @@ function starAgeFilter() {
                     + " (" + ((((parseFloat(response[i].fpl_eqt) * 9 / 5) * 10000) - (459.67 * 10000)) / 10000) + decoder.write(deg) + "F)"
                     + "\n   Number of Stars in System: " + response[i].fpl_snum
                     + "\n      Distance [pc (parsec)]: " + response[i].fst_dist
-                    + "\nStellar Age [Gyr (gigayear)]: " + response[i].fst_age);
+                    + "\nStellar Age [Gyr (gigayear)]: " + response[i].fst_age
+                    + "\n     Purchased (0=no, 1=yes): " + response[i].rmk_cust);
                     console.log("------------------------------------------------");
                 }
                 buyNow();
@@ -393,11 +410,17 @@ function buyPlanet() {
     }).then(function (answers) {
         connection.query("SELECT * FROM planets WHERE fpl_name ='" + answers.whichPlanet + "'", function (error, response) {
             if (error) throw error;
+            if (response == 0) {
+                console.log("--------------------------------");
+                console.log("     No results. Try again.     ");
+                console.log("--------------------------------");
+                search();
+            } else {
             // loop to gather values, stored in variables for cost calculation
             // zero values were stored via schema_planets_db.sql when the table
             // field values weren't given
             for (var i = 0; i < response.length; i++) {
-                var orbper = response[i].fpl_orbper;
+                var orbper = response[i].fpl_orbper * 2;
                 var eccen = response[i].fpl_eccen;
                 var rade = response[i].fpl_rade;
                 var eqt = response[i].fpl_eqt * 1.5;
@@ -406,7 +429,7 @@ function buyPlanet() {
                 var age = response[i].fst_age * 2;
                 // an arbitrary calculation of cost. Roughly based on extremity of
                 // variation from earth values.
-                purchasePrice = Math.round(parseFloat(dist - orbper - eccen - rade + eqt + snum - age) * Math.pow(10, 4)) / Math.pow(10, 4);
+                purchasePrice = Math.round(parseFloat(dist + orbper - eccen - rade + eqt + snum - age) * Math.pow(10, 4)) / Math.pow(10, 4);
                 console.log("------------------------------------------------");
                 console.log("Purchase price for\n " + response[i].fpl_name + "\nis $" + purchasePrice + " billion");
                 console.log("------------------------------------------------");
@@ -429,8 +452,7 @@ function buyPlanet() {
                                 console.log(" " + buyName + " purchased");
                                 console.log("--------------------------------");
                                 search();
-                            }
-                        )
+                            })
                     } else {
                         // otherwise give this message and show order history
                         console.log("--------------------------------");
@@ -440,7 +462,7 @@ function buyPlanet() {
                     }
                 })
             }
-        });
+        }});
     });
 };
 
@@ -458,7 +480,7 @@ function orderHistory() {
         if (error) throw error;
         for (var i = 0; i < response.length; i++) {
             // same cost calculation as above
-            var orbper = response[i].fpl_orbper;
+            var orbper = response[i].fpl_orbper * 2;
             var eccen = response[i].fpl_eccen;
             var rade = response[i].fpl_rade;
             var eqt = response[i].fpl_eqt * 1.5;
@@ -467,7 +489,7 @@ function orderHistory() {
             var age = response[i].fst_age * 2;
             // initial variable for total purchases
             var sum = 0;
-            purchasePrice = Math.round(parseFloat(dist - orbper - eccen - rade + eqt + snum - age) * Math.pow(10,4)) / Math.pow(10,4);
+            purchasePrice = Math.round(parseFloat(dist + orbper - eccen - rade + eqt + snum - age) * Math.pow(10,4)) / Math.pow(10,4);
             // adds each purchase price to the var costs array
             costs.push(purchasePrice);
             // list of purchases and cost
