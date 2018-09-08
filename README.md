@@ -59,8 +59,8 @@ _Some of the following examples will necessarily fail to return results as proof
   * ? Enter the number of suns (1-4): 3 ```// demo buy```
 
 * Filter by Distance (in parsecs)
-  * ? Enter the distance in parsecs (1 parsec = 19 trillion miles, 1.29-8,500): 2 ```// demo buy```
-  * ? Enter the distance in parsecs (1 parsec = 19 trillion miles, 1.29-8,500): 50 ```// no results```
+  * ? Enter the distance in parsecs (1 parsec = 19 trillion miles, 1.29-8,500): 2 ```// no results```
+  * ? Enter the distance in parsecs (1 parsec = 19 trillion miles, 1.29-8,500): 50 ```// demo buy```
   * ? Enter the distance in parsecs (1 parsec = 19 trillion miles, 1.29-8,500): 6300 ```// don't buy```
 
 * Filter by Stellar Age (in gigayears)
