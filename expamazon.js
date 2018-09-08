@@ -102,13 +102,13 @@ function nameFind() {
         name: "planet",
         message: "Enter a planet name or any combination of characters"
     }).then(function (answers) {
-        // LIKE % * % for more flexible search
+        // LIKE % * % used for more search flexibility
         var planetName = "SELECT * FROM planets WHERE fpl_name LIKE '%" + answers.planet + "%'";
         // query planets table for search string
         connection.query(planetName, function (error, response) {
             if (error) throw error;
             if (response == 0) {
-                // each query function has the potential of generating this message and rerunning
+                // each search query function has the potential of generating this message and rerunning
                 console.log("--------------------------------");
                 console.log("     No results. Try again.     ");
                 console.log("--------------------------------");
@@ -120,6 +120,7 @@ function nameFind() {
                 console.log("------------------------------------------------");
                 console.log(" Planetary Data Results for '" + answers.planet + "'");
                 console.log("------------------------------------------------");
+                // loop through the query response and show matches
                 for (var i = 0; i < response.length; i++) {
                     console.log("                 Planet name: " + response[i].fpl_name
                     + "\n            Discovery Method: " + response[i].fpl_discmethod
@@ -129,7 +130,7 @@ function nameFind() {
                     + "\n    Planet Mass [Earth mass]: " + response[i].fpl_bmasse
                     + "\n  Planet Mass [Jupiter mass]: " + response[i].fpl_bmassj
                     + "\n Planet Radius [Earth radii]: " + response[i].fpl_rade
-                    // converted from Kelvin to Fahrenheit
+                    // converted temperature from Kelvin to Fahrenheit
                     + "\n Equilibrium Temperature [K]: " + response[i].fpl_eqt
                     + " (" + ((((parseFloat(response[i].fpl_eqt) * 9 / 5) * 10000) - (459.67 * 10000)) / 10000) + decoder.write(deg) + "F)"
                     + "\n   Number of Stars in System: " + response[i].fpl_snum
@@ -362,7 +363,7 @@ function starAgeFilter() {
 };
 
 
-// for case "Buy a planet"
+// option to buy offered after each search
 function buyNow() {
     inquirer.prompt({
         type: "confirm",
@@ -370,10 +371,12 @@ function buyNow() {
         message: "Buy a planet?",
         default: true
     }).then(function (yesNo) {
+        // if the answer to message is yes
         if (yesNo.buyPlanetNow === true) {
             buyPlanet();
         }
         else {
+            // otherwise rerun initial options list
             search();
         }
     });
@@ -385,10 +388,14 @@ function buyPlanet() {
     inquirer.prompt({
         type: "input",
         name: "whichPlanet",
+        // program needs an accurate but case-insensitive single response result to do cost calculation
         message: "Confirm the planet you wish to buy:"
     }).then(function (answers) {
         connection.query("SELECT * FROM planets WHERE fpl_name ='" + answers.whichPlanet + "'", function (error, response) {
             if (error) throw error;
+            // loop to gather values, stored in variables for cost calculation
+            // zero values were stored via schema_planets_db.sql when the table
+            // field values weren't given
             for (var i = 0; i < response.length; i++) {
                 var orbper = parseFloat(response[i].fpl_orbper);
                 var eccen = parseFloat(response[i].fpl_eccen);
@@ -397,6 +404,8 @@ function buyPlanet() {
                 var snum = parseFloat(response[i].fpl_snum);
                 var dist = parseFloat(response[i].fst_dist);
                 var age = parseFloat(response[i].fst_age);
+                // an arbitrary calculation of cost. Roughly based on extremity of
+                // variation from earth values.
                 purchasePrice = parseFloat(dist - orbper - eccen - rade + eqt + snum - age);
                 console.log("------------------------------------------------");
                 console.log("Purchase price for\n " + response[i].fpl_name + "\nis $" + purchasePrice + " billion");
@@ -411,6 +420,8 @@ function buyPlanet() {
                     default: true
                 }).then(function (yesBuy) {
                     if (yesBuy.yesToBuy === true && condition === 0) {
+                        // if choice to buy is yes and planet is not marked as purchased
+                        // mark planet as purchased in the custom table column: rmk_custom
                         connection.query("UPDATE planets SET rmk_cust = 1 WHERE ?",
                             [{ loc_rowid: updateData }], function (error, response) {
                                 if (error) throw error;
@@ -421,6 +432,7 @@ function buyPlanet() {
                             }
                         )
                     } else {
+                        // otherwise give this message and show order history
                         console.log("--------------------------------");
                         console.log("-|     Already purchased      |-");
                         console.log("--------------------------------");
@@ -433,8 +445,10 @@ function buyPlanet() {
 };
 
 
+// array to store each purchase price, calculated on the fly
 var costs = [];
 
+// for case "Order history"
 function orderHistory() {
     console.log("--------------------------------");
     console.log("-|     Planets purchased      |-");
@@ -442,6 +456,7 @@ function orderHistory() {
     connection.query("SELECT * FROM planets WHERE rmk_cust = 1", function (error, response) {
         if (error) throw error;
         for (var i = 0; i < response.length; i++) {
+            // same cost calculation as above
             var orbper = parseFloat(response[i].fpl_orbper);
             var eccen = parseFloat(response[i].fpl_eccen);
             var rade = parseFloat(response[i].fpl_rade);
@@ -449,16 +464,20 @@ function orderHistory() {
             var snum = parseFloat(response[i].fpl_snum);
             var dist = parseFloat(response[i].fst_dist);
             var age = parseFloat(response[i].fst_age);
-            // console.log("array = " + costs);
+            // initial variable for total purchases
             var sum = 0;
             purchasePrice = parseFloat(dist - orbper - eccen - rade + eqt + snum - age);
+            // adds each purchase price to the var costs array
             costs.push(purchasePrice);
+            // list of purchases and cost
             console.log(response[i].loc_rowid + ". " + response[i].fpl_name + " $" + purchasePrice);
+            // loop to get purchase prices for display
             for (j = 0; j < costs.length; j++) {
             sum += costs[j];
             }
         }
         console.log("- - - - - - - - - - - - - - - - ");
+        // total cost of all purchases
         console.log("Total: $" + sum + " billion");
         console.log("--------------------------------");
         search();
@@ -466,6 +485,7 @@ function orderHistory() {
 };
 
 
+// for case "Quit"
 function quitCLI() {
     connection.end();
 };
