@@ -1,13 +1,15 @@
 
+// requires
 var mysql = require("mysql");
 var inquirer = require("inquirer");
 
-
+// node stringDecoder for the degree sign in temp conversions
 var StringDecoder = require("string_decoder").StringDecoder;
 var decoder = new StringDecoder("utf8");
 var deg = Buffer([0xC2, 0xB0]);
 
 
+// database connection parameters
 var connection = mysql.createConnection({
     host: "localhost",
     port: 3306,
@@ -17,11 +19,12 @@ var connection = mysql.createConnection({
 });
 
 
+// connection message or error
 connection.connect(function (error) {
     if (error) throw error;
     console.log("--------------------------------");
     console.log("-|   Connected to God Node    |-");
-    console.log("-|   The Ultimate Getaway     |-");
+    console.log("-|   The Ultimate Get Away    |-");
     console.log("--------------------------------");
     search();
 });
@@ -46,6 +49,7 @@ function search() {
             "Quit"
         ]
     }).then(function (answers) {
+        // search cases
         switch (answers.choiceOne) {
             case "Find a planet by name or search a combination of characters":
                 nameFind();
@@ -96,17 +100,23 @@ function nameFind() {
     inquirer.prompt({
         type: "input",
         name: "planet",
-        message: "Enter a planet name (full or partial search)"
+        message: "Enter a planet name or any combination of characters"
     }).then(function (answers) {
+        // LIKE % * % for more flexible search
         var planetName = "SELECT * FROM planets WHERE fpl_name LIKE '%" + answers.planet + "%'";
+        // query planets table for search string
         connection.query(planetName, function (error, response) {
             if (error) throw error;
             if (response == 0) {
+                // each query function has the potential of generating this message and rerunning
                 console.log("--------------------------------");
                 console.log("     No results. Try again.     ");
                 console.log("--------------------------------");
                 nameFind();
             } else {
+                // returns a small subset of the planetary data available at
+                // https://exoplanetarchive.ipac.caltech.edu/cgi-bin/TblView/nph-tblView?app=ExoTbls&config=compositepars
+                // a smaller subset of these results is used for arbitrary cost calculation
                 console.log("------------------------------------------------");
                 console.log(" Planetary Data Results for '" + answers.planet + "'");
                 console.log("------------------------------------------------");
@@ -119,6 +129,7 @@ function nameFind() {
                     + "\n    Planet Mass [Earth mass]: " + response[i].fpl_bmasse
                     + "\n  Planet Mass [Jupiter mass]: " + response[i].fpl_bmassj
                     + "\n Planet Radius [Earth radii]: " + response[i].fpl_rade
+                    // converted from Kelvin to Fahrenheit
                     + "\n Equilibrium Temperature [K]: " + response[i].fpl_eqt
                     + " (" + ((((parseFloat(response[i].fpl_eqt) * 9 / 5) * 10000) - (459.67 * 10000)) / 10000) + decoder.write(deg) + "F)"
                     + "\n   Number of Stars in System: " + response[i].fpl_snum
@@ -127,6 +138,7 @@ function nameFind() {
                     + "\n     Purchased (0=no, 1=yes): " + response[i].rmk_cust);
                     console.log("------------------------------------------------");
                 }
+                // after each search the buyNow function runs
                 buyNow();
             }
         });
@@ -139,7 +151,8 @@ function discFilter() {
     inquirer.prompt({
         type: "input",
         name: "discovered",
-        message: "Enter the year to search (1989, 1992, 1994-present)."
+        // valid years to search given
+        message: "Enter the year to search (1989, 1992, 1994-present)"
     }).then(function (answers) {
         var planetDisc = "SELECT * FROM planets WHERE ?";
         connection.query(planetDisc, { fpl_disc: answers.discovered }, function (error, response) {
@@ -171,10 +184,12 @@ function orbperFilter() {
     inquirer.prompt({
         type: "input",
         name: "orbitalPeriod",
+        // search range given
         message: "Enter the length of a year in days (0.09-7300000)"
     }).then(function (answers) {
         var orbPerLow = parseFloat(answers.orbitalPeriod) - 5;
         var orbPerHigh = parseFloat(answers.orbitalPeriod) + 5;
+        // user input plus or minus 5 years used as search range to increase odds of results
         var planetOrbPer = "SELECT * FROM planets WHERE fpl_orbper BETWEEN " + orbPerLow + " AND " + orbPerHigh;
         connection.query(planetOrbPer, function (error, response) {
             if (error) throw error;
@@ -204,10 +219,12 @@ function bmasseFilter() {
     inquirer.prompt({
         type: "input",
         name: "earthMass",
+        // mass reference given
         message: "Enter size (1 = earth mass)"
     }).then(function (answers) {
         var earthMassLow = parseFloat(answers.earthMass) - 0.5;
         var earthMassHigh = parseFloat(answers.earthMass) + 0.5;
+        // user input plus or minus 0.5 earth masses used as search range to increase odds of results
         var planetMass = "SELECT * FROM planets WHERE fpl_bmasse BETWEEN " + earthMassLow + " AND " + earthMassHigh;
         connection.query(planetMass, function (error, response) {
             if (error) throw error;
@@ -238,6 +255,7 @@ function snumFilter() {
     inquirer.prompt({
         type: "input",
         name: "sunCount",
+        // search range given
         message: "Enter the number of suns (1-4)"
     }).then(function (answers) {
         var sunNumber = "SELECT * FROM planets WHERE ?";
@@ -273,10 +291,12 @@ function distFilter() {
     inquirer.prompt({
         type: "input",
         name: "distance",
-        message: "Enter the distance in parsecs (1 parsec = 19 trillion miles)"
+        // reference distance and search range given
+        message: "Enter the distance in parsecs (1 parsec = 19 trillion miles, 1.29-8,500)"
     }).then(function (answers) {
         var distLow = parseFloat(answers.distance) - 0.5;
         var distHigh = parseFloat(answers.distance) + 0.5;
+        // user input plus or minus 0.5 parsecs used as search range to increase odds of results
         var planetDist = "SELECT * FROM planets WHERE fst_dist BETWEEN " + distLow + " AND " + distHigh;
         connection.query(planetDist, function (error, response) {
             if (error) throw error;
@@ -307,10 +327,12 @@ function starAgeFilter() {
     inquirer.prompt({
         type: "input",
         name: "stellarAge",
-        message: "Enter the star age in gigayears (1 gigayear = 1 billion years)"
+        // reference age and search range given
+        message: "Enter the star age in gigayears (1 gigayear = 1 billion years, 0.001-13.4)"
     }).then(function (answers) {
         var stellarAgeLow = parseFloat(answers.stellarAge) - 0.4;
         var stellarAgeHigh = parseFloat(answers.stellarAge) + 0.4;
+        // user input plus or minus 0.4 parsecs used as search range to increase odds of results
         var starAge = "SELECT * FROM planets WHERE fst_age BETWEEN " + stellarAgeLow + " AND " + stellarAgeHigh;
         connection.query(starAge, function (error, response) {
             if (error) throw error;
