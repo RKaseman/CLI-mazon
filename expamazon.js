@@ -35,9 +35,9 @@ function search() {
     inquirer.prompt({
         type: "list",
         name: "choiceOne",
-        message: "Browse exoplanets for sale (WARNING: some search results can be lengthy!)\n ",
+        message: "Browse exoplanets for sale (WARNING: some search results can be lengthy!)",
         choices: [
-            "Find a planet by name or search a combination of characters",
+            "Find a planet by name or search any characters",
             "Filter by Discovery Year",
             "Filter by Orbital Period",
             "Filter by Planet Mass (Earth mass)",
@@ -51,7 +51,7 @@ function search() {
     }).then(function (answers) {
         // search cases
         switch (answers.choiceOne) {
-            case "Find a planet by name or search a combination of characters":
+            case "Find a planet by name or search any characters":
                 nameFind();
                 break;
 
@@ -95,12 +95,12 @@ function search() {
 };
 
 
-// for case "Find a planet by name or search a combination of characters"
+// for case "Find a planet by name or search any characters"
 function nameFind() {
     inquirer.prompt({
         type: "input",
         name: "planet",
-        message: "Enter a planet name or any combination of characters"
+        message: "Search for: "
     }).then(function (answers) {
         // LIKE % * % used for more search flexibility
         var planetName = "SELECT * FROM planets WHERE fpl_name LIKE '%" + answers.planet + "%'";
@@ -400,13 +400,13 @@ function buyPlanet() {
                 var orbper = response[i].fpl_orbper;
                 var eccen = response[i].fpl_eccen;
                 var rade = response[i].fpl_rade;
-                var eqt = response[i].fpl_eqt;
+                var eqt = response[i].fpl_eqt * 1.5;
                 var snum = response[i].fpl_snum;
-                var dist = response[i].fst_dist;
-                var age = response[i].fst_age;
+                var dist = response[i].fst_dist * 5;
+                var age = response[i].fst_age * 2;
                 // an arbitrary calculation of cost. Roughly based on extremity of
                 // variation from earth values.
-                purchasePrice = (parseFloat(dist - orbper - eccen - rade + eqt + snum - age) * 100) / 100;
+                purchasePrice = Math.round(parseFloat(dist - orbper - eccen - rade + eqt + snum - age) * Math.pow(10, 4)) / Math.pow(10, 4);
                 console.log("------------------------------------------------");
                 console.log("Purchase price for\n " + response[i].fpl_name + "\nis $" + purchasePrice + " billion");
                 console.log("------------------------------------------------");
@@ -461,10 +461,10 @@ function orderHistory() {
             var orbper = response[i].fpl_orbper;
             var eccen = response[i].fpl_eccen;
             var rade = response[i].fpl_rade;
-            var eqt = response[i].fpl_eqt;
+            var eqt = response[i].fpl_eqt * 1.5;
             var snum = response[i].fpl_snum;
-            var dist = response[i].fst_dist;
-            var age = response[i].fst_age;
+            var dist = response[i].fst_dist * 5;
+            var age = response[i].fst_age * 2;
             // initial variable for total purchases
             var sum = 0;
             purchasePrice = Math.round(parseFloat(dist - orbper - eccen - rade + eqt + snum - age) * Math.pow(10,4)) / Math.pow(10,4);
