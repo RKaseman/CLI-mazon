@@ -397,13 +397,13 @@ function buyPlanet() {
             // zero values were stored via schema_planets_db.sql when the table
             // field values weren't given
             for (var i = 0; i < response.length; i++) {
-                var orbper = parseFloat(response[i].fpl_orbper);
-                var eccen = parseFloat(response[i].fpl_eccen);
-                var rade = parseFloat(response[i].fpl_rade);
-                var eqt = parseFloat(response[i].fpl_eqt);
-                var snum = parseFloat(response[i].fpl_snum);
-                var dist = parseFloat(response[i].fst_dist);
-                var age = parseFloat(response[i].fst_age);
+                var orbper = (response[i].fpl_orbper);
+                var eccen = (response[i].fpl_eccen);
+                var rade = (response[i].fpl_rade);
+                var eqt = (response[i].fpl_eqt);
+                var snum = (response[i].fpl_snum);
+                var dist = (response[i].fst_dist);
+                var age = (response[i].fst_age);
                 // an arbitrary calculation of cost. Roughly based on extremity of
                 // variation from earth values.
                 purchasePrice = parseFloat(dist - orbper - eccen - rade + eqt + snum - age);
@@ -446,27 +446,28 @@ function buyPlanet() {
 
 
 // array to store each purchase price, calculated on the fly
-var costs = [];
 
 // for case "Order history"
 function orderHistory() {
+    var costs = [];
     console.log("--------------------------------");
     console.log("-|     Planets purchased      |-");
     console.log("--------------------------------");
+    // find planets marked as purchased
     connection.query("SELECT * FROM planets WHERE rmk_cust = 1", function (error, response) {
         if (error) throw error;
         for (var i = 0; i < response.length; i++) {
             // same cost calculation as above
-            var orbper = parseFloat(response[i].fpl_orbper);
-            var eccen = parseFloat(response[i].fpl_eccen);
-            var rade = parseFloat(response[i].fpl_rade);
-            var eqt = parseFloat(response[i].fpl_eqt);
-            var snum = parseFloat(response[i].fpl_snum);
-            var dist = parseFloat(response[i].fst_dist);
-            var age = parseFloat(response[i].fst_age);
+            var orbper = (response[i].fpl_orbper);
+            var eccen = (response[i].fpl_eccen);
+            var rade = (response[i].fpl_rade);
+            var eqt = (response[i].fpl_eqt);
+            var snum = (response[i].fpl_snum);
+            var dist = (response[i].fst_dist);
+            var age = (response[i].fst_age);
             // initial variable for total purchases
             var sum = 0;
-            purchasePrice = parseFloat(dist - orbper - eccen - rade + eqt + snum - age);
+            purchasePrice = (dist - orbper - eccen - rade + eqt + snum - age);
             // adds each purchase price to the var costs array
             costs.push(purchasePrice);
             // list of purchases and cost
@@ -478,7 +479,7 @@ function orderHistory() {
         }
         console.log("- - - - - - - - - - - - - - - - ");
         // total cost of all purchases
-        console.log("Total: $" + sum + " billion");
+        console.log("Total: $" + parseFloat(sum) + " billion");
         console.log("--------------------------------");
         search();
     });
