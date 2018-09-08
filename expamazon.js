@@ -123,20 +123,20 @@ function nameFind() {
                 // loop through the query response and show matches
                 for (var i = 0; i < response.length; i++) {
                     console.log("                 Planet name: " + response[i].fpl_name
-                    + "\n            Discovery Method: " + response[i].fpl_discmethod
-                    + "\n              Discovery Year: " + response[i].fpl_disc
-                    + "\n       Orbital Period [days]: " + response[i].fpl_orbper
-                    + "\n                Eccentricity: " + response[i].fpl_eccen
-                    + "\n    Planet Mass [Earth mass]: " + response[i].fpl_bmasse
-                    + "\n  Planet Mass [Jupiter mass]: " + response[i].fpl_bmassj
-                    + "\n Planet Radius [Earth radii]: " + response[i].fpl_rade
-                    // converted temperature from Kelvin to Fahrenheit
-                    + "\n Equilibrium Temperature [K]: " + response[i].fpl_eqt
-                    + " (" + ((((parseFloat(response[i].fpl_eqt) * 9 / 5) * 10000) - (459.67 * 10000)) / 10000) + decoder.write(deg) + "F)"
-                    + "\n   Number of Stars in System: " + response[i].fpl_snum
-                    + "\n      Distance [pc (parsec)]: " + response[i].fst_dist
-                    + "\nStellar Age [Gyr (gigayear)]: " + response[i].fst_age
-                    + "\n     Purchased (0=no, 1=yes): " + response[i].rmk_cust);
+                        + "\n            Discovery Method: " + response[i].fpl_discmethod
+                        + "\n              Discovery Year: " + response[i].fpl_disc
+                        + "\n       Orbital Period [days]: " + response[i].fpl_orbper
+                        + "\n                Eccentricity: " + response[i].fpl_eccen
+                        + "\n    Planet Mass [Earth mass]: " + response[i].fpl_bmasse
+                        + "\n  Planet Mass [Jupiter mass]: " + response[i].fpl_bmassj
+                        + "\n Planet Radius [Earth radii]: " + response[i].fpl_rade
+                        // converted temperature from Kelvin to Fahrenheit
+                        + "\n Equilibrium Temperature [K]: " + response[i].fpl_eqt
+                        + " (" + ((((parseFloat(response[i].fpl_eqt) * 9 / 5) * 10000) - (459.67 * 10000)) / 10000) + decoder.write(deg) + "F)"
+                        + "\n   Number of Stars in System: " + response[i].fpl_snum
+                        + "\n      Distance [pc (parsec)]: " + response[i].fst_dist
+                        + "\nStellar Age [Gyr (gigayear)]: " + response[i].fst_age
+                        + "\n     Purchased (0=no, 1=yes): " + response[i].rmk_cust);
                     console.log("------------------------------------------------");
                 }
                 // after each search the buyNow function runs
@@ -169,12 +169,12 @@ function discFilter() {
                 console.log("------------------------------------------------");
                 for (var i = 0; i < response.length; i++) {
                     console.log("              Archive number: " + response[i].loc_rowid
-                    + "\n                 Planet Name: " + response[i].fpl_name
-                    + "\n            Discovery Method: " + response[i].fpl_discmethod
-                    + "\n    Planet Mass [Earth mass]: " + response[i].fpl_bmasse
-                    + "\n Planet Radius [Earth radii]: " + response[i].fpl_rade
-                    + "\n      Distance [pc (parsec)]: " + response[i].fst_dist
-                    + "\n     Purchased (0=no, 1=yes): " + response[i].rmk_cust);
+                        + "\n                 Planet Name: " + response[i].fpl_name
+                        + "\n            Discovery Method: " + response[i].fpl_discmethod
+                        + "\n    Planet Mass [Earth mass]: " + response[i].fpl_bmasse
+                        + "\n Planet Radius [Earth radii]: " + response[i].fpl_rade
+                        + "\n      Distance [pc (parsec)]: " + response[i].fst_dist
+                        + "\n     Purchased (0=no, 1=yes): " + response[i].rmk_cust);
                     console.log("------------------------------------------------");
                 }
                 buyNow();
@@ -209,11 +209,11 @@ function orbperFilter() {
                 console.log("------------------------------------------------");
                 for (var i = 0; i < response.length; i++) {
                     console.log("                   Full name: " + response[i].fpl_name
-                    + "\n       Orbital Period [days]: " + response[i].fpl_orbper
-                    + "\n    Planet Mass [Earth mass]: " + response[i].fpl_bmasse
-                    + "\n Planet Radius [Earth radii]: " + response[i].fpl_rade
-                    + "\n      Distance [pc (parsec)]: " + response[i].fst_dist
-                    + "\n     Purchased (0=no, 1=yes): " + response[i].rmk_cust);
+                        + "\n       Orbital Period [days]: " + response[i].fpl_orbper
+                        + "\n    Planet Mass [Earth mass]: " + response[i].fpl_bmasse
+                        + "\n Planet Radius [Earth radii]: " + response[i].fpl_rade
+                        + "\n      Distance [pc (parsec)]: " + response[i].fst_dist
+                        + "\n     Purchased (0=no, 1=yes): " + response[i].rmk_cust);
                     console.log("------------------------------------------------");
                 }
                 buyNow();
@@ -248,10 +248,10 @@ function bmasseFilter() {
                 console.log("------------------------------------------------");
                 for (var i = 0; i < response.length; i++) {
                     console.log("                   Full name: " + response[i].fpl_name
-                    + "\n    Planet Mass [Earth mass]: " + response[i].fpl_bmasse
-                    + "\n  Planet Mass [Jupiter mass]: " + response[i].fpl_bmassj
-                    + "\n Planet Radius [Earth radii]: " + response[i].fpl_rade
-                    + "\n     Purchased (0=no, 1=yes): " + response[i].rmk_cust);
+                        + "\n    Planet Mass [Earth mass]: " + response[i].fpl_bmasse
+                        + "\n  Planet Mass [Jupiter mass]: " + response[i].fpl_bmassj
+                        + "\n Planet Radius [Earth radii]: " + response[i].fpl_rade
+                        + "\n     Purchased (0=no, 1=yes): " + response[i].rmk_cust);
                     console.log("------------------------------------------------");
                 }
                 buyNow();
@@ -283,14 +283,14 @@ function snumFilter() {
                 console.log("------------------------------------------------");
                 for (var i = 0; i < response.length; i++) {
                     console.log("                   Full name: " + response[i].fpl_name
-                    + "\n            Discovery Method: " + response[i].fpl_discmethod
-                    + "\n                Eccentricity: " + response[i].fpl_eccen
-                    + "\n    Planet Mass [Earth mass]: " + response[i].fpl_bmasse
-                    + "\n Planet Radius [Earth radii]: " + response[i].fpl_rade
-                    + "\n Equilibrium Temperature [K]: " + response[i].fpl_eqt
-                    + " (" + ((((parseFloat(response[i].fpl_eqt) * 9 / 5) * 10000) - (459.67 * 10000)) / 10000) + decoder.write(deg) + "F)"
-                    + "\n   Number of Stars in System: " + response[i].fpl_snum
-                    + "\n     Purchased (0=no, 1=yes): " + response[i].rmk_cust);
+                        + "\n            Discovery Method: " + response[i].fpl_discmethod
+                        + "\n                Eccentricity: " + response[i].fpl_eccen
+                        + "\n    Planet Mass [Earth mass]: " + response[i].fpl_bmasse
+                        + "\n Planet Radius [Earth radii]: " + response[i].fpl_rade
+                        + "\n Equilibrium Temperature [K]: " + response[i].fpl_eqt
+                        + " (" + ((((parseFloat(response[i].fpl_eqt) * 9 / 5) * 10000) - (459.67 * 10000)) / 10000) + decoder.write(deg) + "F)"
+                        + "\n   Number of Stars in System: " + response[i].fpl_snum
+                        + "\n     Purchased (0=no, 1=yes): " + response[i].rmk_cust);
                     console.log("------------------------------------------------");
                 }
                 buyNow();
@@ -325,11 +325,11 @@ function distFilter() {
                 console.log("------------------------------------------------");
                 for (var i = 0; i < response.length; i++) {
                     console.log("                   Full name: " + response[i].fpl_name
-                    + "\n    Planet Mass [Earth mass]: " + response[i].fpl_bmasse
-                    + "\n Planet Radius [Earth radii]: " + response[i].fpl_rade
-                    + "\n      Distance [pc (parsec)]: " + response[i].fst_dist
-                    + "\nStellar Age [Gyr (gigayear)]: " + response[i].fst_age
-                    + "\n     Purchased (0=no, 1=yes): " + response[i].rmk_cust);
+                        + "\n    Planet Mass [Earth mass]: " + response[i].fpl_bmasse
+                        + "\n Planet Radius [Earth radii]: " + response[i].fpl_rade
+                        + "\n      Distance [pc (parsec)]: " + response[i].fst_dist
+                        + "\nStellar Age [Gyr (gigayear)]: " + response[i].fst_age
+                        + "\n     Purchased (0=no, 1=yes): " + response[i].rmk_cust);
                     console.log("------------------------------------------------");
                 }
                 buyNow();
@@ -347,9 +347,9 @@ function starAgeFilter() {
         // reference age and search range given
         message: "Enter the star age in gigayears (1 gigayear = 1 billion years, 0.001-13.4):"
     }).then(function (answers) {
-        var stellarAgeLow = parseFloat(answers.stellarAge) - 0.2;
-        var stellarAgeHigh = parseFloat(answers.stellarAge) + 0.2;
-        // user input plus or minus 0.2 parsecs used as search range to limit results
+        var stellarAgeLow = parseFloat(answers.stellarAge) - 0.02;
+        var stellarAgeHigh = parseFloat(answers.stellarAge) + 0.02;
+        // user input plus or minus 0.02 parsecs used as search range to limit results
         var starAge = "SELECT * FROM planets WHERE fst_age BETWEEN " + stellarAgeLow + " AND " + stellarAgeHigh;
         connection.query(starAge, function (error, response) {
             if (error) throw error;
@@ -360,17 +360,17 @@ function starAgeFilter() {
                 starAgeFilter();
             } else {
                 console.log("------------------------------------------------");
-                console.log(" Stellar Age " + answers.stellarAge + " gigayears +/- 0.2");
+                console.log(" Stellar Age " + answers.stellarAge + " gigayears +/- 0.02");
                 console.log("------------------------------------------------");
                 for (var i = 0; i < response.length; i++) {
                     console.log("                   Full name: " + response[i].fpl_name
-                    + "\n            Discovery Method: " + response[i].fpl_discmethod
-                    + "\n Equilibrium Temperature [K]: " + response[i].fpl_eqt
-                    + " (" + ((((parseFloat(response[i].fpl_eqt) * 9 / 5) * 10000) - (459.67 * 10000)) / 10000) + decoder.write(deg) + "F)"
-                    + "\n   Number of Stars in System: " + response[i].fpl_snum
-                    + "\n      Distance [pc (parsec)]: " + response[i].fst_dist
-                    + "\nStellar Age [Gyr (gigayear)]: " + response[i].fst_age
-                    + "\n     Purchased (0=no, 1=yes): " + response[i].rmk_cust);
+                        + "\n            Discovery Method: " + response[i].fpl_discmethod
+                        + "\n Equilibrium Temperature [K]: " + response[i].fpl_eqt
+                        + " (" + ((((parseFloat(response[i].fpl_eqt) * 9 / 5) * 10000) - (459.67 * 10000)) / 10000) + decoder.write(deg) + "F)"
+                        + "\n   Number of Stars in System: " + response[i].fpl_snum
+                        + "\n      Distance [pc (parsec)]: " + response[i].fst_dist
+                        + "\nStellar Age [Gyr (gigayear)]: " + response[i].fst_age
+                        + "\n     Purchased (0=no, 1=yes): " + response[i].rmk_cust);
                     console.log("------------------------------------------------");
                 }
                 buyNow();
@@ -416,53 +416,57 @@ function buyPlanet() {
                 console.log("--------------------------------");
                 search();
             } else {
-            // loop to gather values, stored in variables for cost calculation
-            // zero values were stored via schema_planets_db.sql when the table
-            // field values weren't given
-            for (var i = 0; i < response.length; i++) {
-                var orbper = response[i].fpl_orbper * 2;
-                var eccen = response[i].fpl_eccen;
-                var rade = response[i].fpl_rade;
-                var eqt = response[i].fpl_eqt * 1.5;
-                var snum = response[i].fpl_snum;
-                var dist = response[i].fst_dist * 5;
-                var age = response[i].fst_age * 2;
-                // an arbitrary calculation of cost. Roughly based on extremity of
-                // variation from earth values.
-                purchasePrice = Math.round(parseFloat(dist + orbper - eccen - rade + eqt + snum - age) * Math.pow(10, 4)) / Math.pow(10, 4);
-                console.log("------------------------------------------------");
-                console.log("Purchase price for\n " + response[i].fpl_name + "\nis $" + purchasePrice + " billion");
-                console.log("------------------------------------------------");
-                var condition = response[i].rmk_cust;
-                var updateData = response[i].loc_rowid;
-                var buyName = response[i].fpl_name;
-                inquirer.prompt({
-                    type: "confirm",
-                    name: "yesToBuy",
-                    message: "Buy the planet",
-                    default: true
-                }).then(function (yesBuy) {
-                    if (yesBuy.yesToBuy === true && condition === 0) {
-                        // if choice to buy is yes and planet is not marked as purchased
-                        // mark planet as purchased in the custom table column: rmk_custom
-                        connection.query("UPDATE planets SET rmk_cust = 1 WHERE ?",
-                            [{ loc_rowid: updateData }], function (error, response) {
-                                if (error) throw error;
-                                console.log("--------------------------------");
-                                console.log(" " + buyName + " purchased");
-                                console.log("--------------------------------");
-                                search();
-                            })
-                    } else {
-                        // otherwise give this message and show order history
-                        console.log("--------------------------------");
-                        console.log("-|     Already purchased      |-");
-                        console.log("--------------------------------");
-                        orderHistory();
-                    }
-                })
+                // loop to gather values, stored in variables for cost calculation
+                // zero values were stored via schema_planets_db.sql when the table
+                // field values weren't given
+                for (var i = 0; i < response.length; i++) {
+                    var orbper = response[i].fpl_orbper * 2;
+                    var eccen = response[i].fpl_eccen;
+                    var rade = response[i].fpl_rade;
+                    var eqt = response[i].fpl_eqt * 1.5;
+                    var snum = response[i].fpl_snum;
+                    var dist = response[i].fst_dist * 5;
+                    var age = response[i].fst_age * 2;
+                    // an arbitrary calculation of cost. Roughly based on extremity of
+                    // variation from earth values.
+                    purchasePrice = Math.round(parseFloat(dist + orbper - eccen - rade + eqt + snum - age) * Math.pow(10, 4)) / Math.pow(10, 4);
+                    console.log("------------------------------------------------");
+                    console.log("Purchase price for\n " + response[i].fpl_name + "\nis $" + purchasePrice + " billion");
+                    console.log("------------------------------------------------");
+                    var condition = response[i].rmk_cust;
+                    var updateData = response[i].loc_rowid;
+                    var buyName = response[i].fpl_name;
+                    inquirer.prompt({
+                        type: "confirm",
+                        name: "yesToBuy",
+                        message: "Buy the planet",
+                        default: true
+                    }).then(function (yesBuy) {
+                        if (yesBuy.yesToBuy === false) {
+                            search();
+                        }
+                        else if (yesBuy.yesToBuy === true && condition === 0) {
+                            // if choice to buy is yes and planet is not marked as purchased
+                            // mark planet as purchased in the custom table column: rmk_custom
+                            connection.query("UPDATE planets SET rmk_cust = 1 WHERE ?",
+                                [{ loc_rowid: updateData }], function (error, response) {
+                                    if (error) throw error;
+                                    console.log("--------------------------------");
+                                    console.log(" " + buyName + " purchased");
+                                    console.log("--------------------------------");
+                                    search();
+                                })
+                        } else {
+                            // otherwise give this message and show order history
+                            console.log("--------------------------------");
+                            console.log("-|     Already purchased      |-");
+                            console.log("--------------------------------");
+                            orderHistory();
+                        }
+                    })
+                }
             }
-        }});
+        });
     });
 };
 
@@ -474,7 +478,7 @@ function orderHistory() {
     var costs = [];
     console.log("\n--------------------------------");
     console.log("-|     Planets purchased      |-");
-    console.log("--------------------------------");
+    console.log("--------------------------------\n");
     // find planets marked as purchased
     connection.query("SELECT * FROM planets WHERE rmk_cust = 1", function (error, response) {
         if (error) throw error;
@@ -484,33 +488,34 @@ function orderHistory() {
             console.log("--------------------------------");
             search();
         } else {
-        for (var i = 0; i < response.length; i++) {
-            // same cost calculation as above
-            var orbper = response[i].fpl_orbper * 2;
-            var eccen = response[i].fpl_eccen;
-            var rade = response[i].fpl_rade;
-            var eqt = response[i].fpl_eqt * 1.5;
-            var snum = response[i].fpl_snum;
-            var dist = response[i].fst_dist * 5;
-            var age = response[i].fst_age * 2;
-            // initial variable for total purchases
-            var sum = 0;
-            purchasePrice = Math.round(parseFloat(dist + orbper - eccen - rade + eqt + snum - age) * Math.pow(10,4)) / Math.pow(10,4);
-            // adds each purchase price to the var costs array
-            costs.push(purchasePrice);
-            // list of purchases and cost
-            console.log(response[i].loc_rowid + ". " + response[i].fpl_name + " $" + purchasePrice);
-            // loop to get purchase prices for display
-            for (j = 0; j < costs.length; j++) {
-            sum += costs[j];
+            for (var i = 0; i < response.length; i++) {
+                // same cost calculation as above
+                var orbper = response[i].fpl_orbper * 2;
+                var eccen = response[i].fpl_eccen;
+                var rade = response[i].fpl_rade;
+                var eqt = response[i].fpl_eqt * 1.5;
+                var snum = response[i].fpl_snum;
+                var dist = response[i].fst_dist * 5;
+                var age = response[i].fst_age * 2;
+                // initial variable for total purchases
+                var sum = 0;
+                purchasePrice = Math.round(parseFloat(dist + orbper - eccen - rade + eqt + snum - age) * Math.pow(10, 4)) / Math.pow(10, 4);
+                // adds each purchase price to the var costs array
+                costs.push(purchasePrice);
+                // list of purchases and cost
+                console.log(response[i].loc_rowid + ". " + response[i].fpl_name + " $" + purchasePrice);
+                // loop to get purchase prices for display
+                for (j = 0; j < costs.length; j++) {
+                    sum += costs[j];
+                }
             }
+            console.log("\n- - - - - - - - - - - - - - - - ");
+            // total cost of all purchases
+            console.log("Total: $" + sum.toFixed(4) + " billion");
+            console.log("--------------------------------\n");
+            search();
         }
-        console.log("- - - - - - - - - - - - - - - - ");
-        // total cost of all purchases
-        console.log("Total: $" + sum.toFixed(4) + " billion");
-        console.log("--------------------------------\n");
-        search();
-    }});
+    });
 };
 
 
