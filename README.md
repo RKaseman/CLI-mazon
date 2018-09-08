@@ -25,52 +25,50 @@ I couldn't find an answer for eliminating them and they don't seem to affect the
 
 For demonstration purposes my searches were --
 
-* >Find a planet by name or search any characters
+* Find a planet by name or search any characters
   * ? Search for: br
   * ? Search for: dy
   * ? Search for: ev
   * ? Search for: sa
   * ? Search for: tau
-  * ? Search for: sex
-(I know it's juvenile, but it's still amusing. If [National Geographic](https://blog.nationalgeographic.org/2010/08/10/sex-c-new-planet-discovered/) can snicker about it, so can we.
-  * ? Search for: trappist
-(demo buy)
+  * ? Search for: sex (I know it's juvenile, but it's still amusing. If [National Geographic](https://blog.nationalgeographic.org/2010/08/10/sex-c-new-planet-discovered/) can snicker about it, so can we.)
+  * ? Search for: trappist (demo buy)
 
->Filter by Discovery Year
-? Enter the year to search (1989, 1992, 1994-present): 1994
-? Enter the year to search (1989, 1992, 1994-present): 2005
+* Filter by Discovery Year
+  * ? Enter the year to search (1989, 1992, 1994-present): 1994
+  * ? Enter the year to search (1989, 1992, 1994-present): 2005
 
->Filter by Orbital Period
-? Enter the length of a year in days (0.09-7300000): 2.75
-? Enter the length of a year in days (0.09-7300000): 365
-? Enter the length of a year in days (0.09-7300000): 7500
-? Enter the length of a year in days (0.09-7300000): 555530
+* Filter by Orbital Period
+  * ? Enter the length of a year in days (0.09-7300000): 2.75
+  * ? Enter the length of a year in days (0.09-7300000): 365
+  * ? Enter the length of a year in days (0.09-7300000): 7500
+  * ? Enter the length of a year in days (0.09-7300000): 555530
 
->Filter by Planet Mass (Earth mass)
-? Enter mass (1 = earth mass): 0.5
-? Enter mass (1 = earth mass): 1
-? Enter mass (1 = earth mass): 7000
-? Enter mass (1 = earth mass): 9057.77
+* Filter by Planet Mass (Earth mass)
+  * ? Enter mass (1 = earth mass): 0.5
+  * ? Enter mass (1 = earth mass): 1
+  * ? Enter mass (1 = earth mass): 7000
+  * ? Enter mass (1 = earth mass): 9057.77
 
->Filter by number of Suns
-? Enter the number of suns (1-4): 5
-? Enter the number of suns (1-4): 4
-? Enter the number of suns (1-4): 3
+* Filter by number of Suns
+  * ? Enter the number of suns (1-4): 5
+  * ? Enter the number of suns (1-4): 4
+  * ? Enter the number of suns (1-4): 3
 
->Filter by Distance (in parsecs)
-? Enter the distance in parsecs (1 parsec = 19 trillion miles, 1.29-8,500): 1.29
-? Enter the distance in parsecs (1 parsec = 19 trillion miles, 1.29-8,500): 2
-? Enter the distance in parsecs (1 parsec = 19 trillion miles, 1.29-8,500): 50
-? Enter the distance in parsecs (1 parsec = 19 trillion miles, 1.29-8,500): 6300
+* Filter by Distance (in parsecs)
+  * ? Enter the distance in parsecs (1 parsec = 19 trillion miles, 1.29-8,500): 1.29
+  * ? Enter the distance in parsecs (1 parsec = 19 trillion miles, 1.29-8,500): 2
+  * ? Enter the distance in parsecs (1 parsec = 19 trillion miles, 1.29-8,500): 50
+  * ? Enter the distance in parsecs (1 parsec = 19 trillion miles, 1.29-8,500): 6300
 
->Filter by Stellar Age (in gigayears)
-? Enter the star age in gigayears (1 gigayear = 1 billion years, 0.001-13.4): 0.5
-? Enter the star age in gigayears (1 gigayear = 1 billion years, 0.001-13.4): 7
-? Enter the star age in gigayears (1 gigayear = 1 billion years, 0.001-13.4): 15
-? Enter the star age in gigayears (1 gigayear = 1 billion years, 0.001-13.4): 13.4
+* Filter by Stellar Age (in gigayears)
+  * ? Enter the star age in gigayears (1 gigayear = 1 billion years, 0.001-13.4): 0.5
+  * ? Enter the star age in gigayears (1 gigayear = 1 billion years, 0.001-13.4): 7
+  * ? Enter the star age in gigayears (1 gigayear = 1 billion years, 0.001-13.4): 15
+  * ? Enter the star age in gigayears (1 gigayear = 1 billion years, 0.001-13.4): 13.4
 
->Buy a planet
-? Confirm the planet you wish to buy: trappist-1 c
+* Buy a planet
+  * ? Confirm the planet you wish to buy: trappist-1 c
 
 <!-- ### Add To Your Portfolio -->
 
