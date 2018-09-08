@@ -22,10 +22,10 @@ var connection = mysql.createConnection({
 // connection message or error
 connection.connect(function (error) {
     if (error) throw error;
-    console.log("--------------------------------");
+    console.log("\n--------------------------------");
     console.log("-|   Connected to God Node    |-");
     console.log("-|   The Ultimate Get Away    |-");
-    console.log("--------------------------------");
+    console.log("--------------------------------\n");
     search();
 });
 
@@ -153,7 +153,7 @@ function discFilter() {
         type: "input",
         name: "discovered",
         // valid years to search given
-        message: "Enter the year to search (1989, 1992, 1994-present)"
+        message: "Enter the year to search (1989, 1992, 1994-present):"
     }).then(function (answers) {
         var planetDisc = "SELECT * FROM planets WHERE ?";
         connection.query(planetDisc, { fpl_disc: answers.discovered }, function (error, response) {
@@ -190,11 +190,11 @@ function orbperFilter() {
         type: "input",
         name: "orbitalPeriod",
         // search range given
-        message: "Enter the length of a year in days (0.09-7300000)"
+        message: "Enter the length of a year in days (0.09-7300000):"
     }).then(function (answers) {
-        var orbPerLow = parseFloat(answers.orbitalPeriod) - 5;
-        var orbPerHigh = parseFloat(answers.orbitalPeriod) + 5;
-        // user input plus or minus 5 years used as search range to increase odds of results
+        var orbPerLow = parseFloat(answers.orbitalPeriod) - 2;
+        var orbPerHigh = parseFloat(answers.orbitalPeriod) + 2;
+        // user input plus or minus 2 years used as search range to limit results
         var planetOrbPer = "SELECT * FROM planets WHERE fpl_orbper BETWEEN " + orbPerLow + " AND " + orbPerHigh;
         connection.query(planetOrbPer, function (error, response) {
             if (error) throw error;
@@ -205,7 +205,7 @@ function orbperFilter() {
                 orbperFilter();
             } else {
                 console.log("------------------------------------------------");
-                console.log(" Orbital Period " + answers.orbitalPeriod + " days (+/- 5)");
+                console.log(" Orbital Period " + answers.orbitalPeriod + " days (+/- 2)");
                 console.log("------------------------------------------------");
                 for (var i = 0; i < response.length; i++) {
                     console.log("                   Full name: " + response[i].fpl_name
@@ -223,13 +223,13 @@ function orbperFilter() {
 };
 
 
-// for case "Filter by Planet Mass [Earth mass]"
+// for case "Filter by Planet Mass (Earth mass)"
 function bmasseFilter() {
     inquirer.prompt({
         type: "input",
         name: "earthMass",
         // mass reference given
-        message: "Enter size (1 = earth mass)"
+        message: "Enter mass (1 = earth mass):"
     }).then(function (answers) {
         var earthMassLow = parseFloat(answers.earthMass) - 0.1;
         var earthMassHigh = parseFloat(answers.earthMass) + 0.1;
@@ -267,7 +267,7 @@ function snumFilter() {
         type: "input",
         name: "sunCount",
         // search range given
-        message: "Enter the number of suns (1-4)"
+        message: "Enter the number of suns (1-4):"
     }).then(function (answers) {
         var sunNumber = "SELECT * FROM planets WHERE ?";
         connection.query(sunNumber, { fpl_snum: answers.sunCount }, function (error, response) {
@@ -306,7 +306,7 @@ function distFilter() {
         type: "input",
         name: "distance",
         // reference distance and search range given
-        message: "Enter the distance in parsecs (1 parsec = 19 trillion miles, 1.29-8,500)"
+        message: "Enter the distance in parsecs (1 parsec = 19 trillion miles, 1.29-8,500):"
     }).then(function (answers) {
         var distLow = parseFloat(answers.distance) - 0.5;
         var distHigh = parseFloat(answers.distance) + 0.5;
@@ -345,7 +345,7 @@ function starAgeFilter() {
         type: "input",
         name: "stellarAge",
         // reference age and search range given
-        message: "Enter the star age in gigayears (1 gigayear = 1 billion years, 0.001-13.4)"
+        message: "Enter the star age in gigayears (1 gigayear = 1 billion years, 0.001-13.4):"
     }).then(function (answers) {
         var stellarAgeLow = parseFloat(answers.stellarAge) - 0.2;
         var stellarAgeHigh = parseFloat(answers.stellarAge) + 0.2;
@@ -472,12 +472,18 @@ function buyPlanet() {
 function orderHistory() {
     // array to store each purchase price, calculated on the fly
     var costs = [];
-    console.log("--------------------------------");
+    console.log("\n--------------------------------");
     console.log("-|     Planets purchased      |-");
     console.log("--------------------------------");
     // find planets marked as purchased
     connection.query("SELECT * FROM planets WHERE rmk_cust = 1", function (error, response) {
         if (error) throw error;
+        if (response == 0) {
+            console.log("--------------------------------");
+            console.log("     No results. Try again.     ");
+            console.log("--------------------------------");
+            search();
+        } else {
         for (var i = 0; i < response.length; i++) {
             // same cost calculation as above
             var orbper = response[i].fpl_orbper * 2;
@@ -502,9 +508,9 @@ function orderHistory() {
         console.log("- - - - - - - - - - - - - - - - ");
         // total cost of all purchases
         console.log("Total: $" + sum.toFixed(4) + " billion");
-        console.log("--------------------------------");
+        console.log("--------------------------------\n");
         search();
-    });
+    }});
 };
 
 
