@@ -23,6 +23,8 @@ I couldn't find an answer for eliminating them and they don't seem to affect the
 
 - - -
 
+_Some of the following entries will necessarily fail as proof the app doesn't crash._
+
 For demonstration purposes my searches were --
 
 * Find a planet by name or search any characters
