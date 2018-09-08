@@ -25,15 +25,15 @@ I couldn't find an answer for eliminating them and they don't seem to affect the
 
 For demonstration purposes my searches were --
 
->Find a planet by name or search any characters
-? Search for: br
-? Search for: dy
-? Search for: ev
-? Search for: sa
-? Search for: tau
-? Search for: sex
+> >Find a planet by name or search any characters
+> ? Search for: br
+> ? Search for: dy
+> ? Search for: ev
+> ? Search for: sa
+> ? Search for: tau
+> ? Search for: sex
 * (I know it's juvenile, but it's still amusing. If [National Geographic](https://blog.nationalgeographic.org/2010/08/10/sex-c-new-planet-discovered/) can snicker about it, so can we.
-? Search for: trappist
+> ? Search for: trappist
 * (demo buy)
 
 >Filter by Discovery Year
