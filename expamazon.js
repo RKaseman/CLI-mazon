@@ -397,16 +397,16 @@ function buyPlanet() {
             // zero values were stored via schema_planets_db.sql when the table
             // field values weren't given
             for (var i = 0; i < response.length; i++) {
-                var orbper = (response[i].fpl_orbper);
-                var eccen = (response[i].fpl_eccen);
-                var rade = (response[i].fpl_rade);
-                var eqt = (response[i].fpl_eqt);
-                var snum = (response[i].fpl_snum);
-                var dist = (response[i].fst_dist);
-                var age = (response[i].fst_age);
+                var orbper = response[i].fpl_orbper;
+                var eccen = response[i].fpl_eccen;
+                var rade = response[i].fpl_rade;
+                var eqt = response[i].fpl_eqt;
+                var snum = response[i].fpl_snum;
+                var dist = response[i].fst_dist;
+                var age = response[i].fst_age;
                 // an arbitrary calculation of cost. Roughly based on extremity of
                 // variation from earth values.
-                purchasePrice = parseFloat(dist - orbper - eccen - rade + eqt + snum - age);
+                purchasePrice = (parseFloat(dist - orbper - eccen - rade + eqt + snum - age) * 1000) / 1000;
                 console.log("------------------------------------------------");
                 console.log("Purchase price for\n " + response[i].fpl_name + "\nis $" + purchasePrice + " billion");
                 console.log("------------------------------------------------");
@@ -445,10 +445,10 @@ function buyPlanet() {
 };
 
 
-// array to store each purchase price, calculated on the fly
 
 // for case "Order history"
 function orderHistory() {
+    // array to store each purchase price, calculated on the fly
     var costs = [];
     console.log("--------------------------------");
     console.log("-|     Planets purchased      |-");
@@ -467,7 +467,7 @@ function orderHistory() {
             var age = (response[i].fst_age);
             // initial variable for total purchases
             var sum = 0;
-            purchasePrice = (dist - orbper - eccen - rade + eqt + snum - age);
+            purchasePrice = (parseFloat(dist - orbper - eccen - rade + eqt + snum - age) * 1000) / 1000;
             // adds each purchase price to the var costs array
             costs.push(purchasePrice);
             // list of purchases and cost
@@ -479,7 +479,7 @@ function orderHistory() {
         }
         console.log("- - - - - - - - - - - - - - - - ");
         // total cost of all purchases
-        console.log("Total: $" + parseFloat(sum) + " billion");
+        console.log("Total: $" + sum.toFixed(4) + " billion");
         console.log("--------------------------------");
         search();
     });
