@@ -1,7 +1,5 @@
 # EXPA-mazon (Exoplanet Archive Marketplace)
 
-- - -
-
 ## Node.js & MySQL
 
 ## Overview
